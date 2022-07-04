@@ -1,14 +1,14 @@
 <template>
     <vs-date-time
-    realTime
-    format="YY-MM-DD"
+    :defaultTime="time"
+    format="YY-MM-DD HH:mm:ss"
     >
 
     </vs-date-time>
     <vs-text text="123" :running="running" ></vs-text>
     <el-card>
             <span @click.stop="toggleDark()">暗黑模式</span>
-            <el-switch size="small" v-model="isDark"/>
+            <el-switch size="small" v-model="isDark" @change="toggleDark"/>
             <el-button @click="go">Default</el-button>
             <el-button type="primary" @click="running = !running">Primary</el-button>
             <el-button type="success">Success</el-button>
@@ -37,15 +37,23 @@
                 style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
             />
     </el-card>
+    <div class="theme-text">
+
+    </div>
 </template>
 
 <script lang='ts' setup>
 import dayjs from 'dayjs'
-import { reactive, toRefs,ref} from 'vue'
-import { useDark, useToggle } from '@vueuse/core'
+import { reactive, toRefs,ref,watchEffect} from 'vue'
 import { useRouter } from 'vue-router';
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+import {useThemeStore} from '@/stores/theme'
+const store = useThemeStore()
+console.log(store)
+const isDark = ref(false)
+const toggleDark =()=>{
+    let theme = isDark.value ? 'dark' : 'light'
+    store.setTheme(theme)
+}
 const value1 = ref('')
 const value = ref('')
 const color1 = ref('')
@@ -59,4 +67,11 @@ const go =()=>{
 }
 </script>
 <style scoped lang='scss'>
+.theme-text{
+    width: 400px;
+    height:400px;
+    @include themify($themes) {
+        background: themed("color1");
+    }
+}
 </style>

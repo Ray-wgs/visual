@@ -5,6 +5,7 @@ import { createPinia } from "pinia";
 import plugins from  './plugins/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import '@/styles/theme/theme-light.scss'
-import '@/styles/theme/theme-dark.scss'
+import '@/styles/element/light.scss'
+import '@/styles/element/dark.scss'
+
 createApp(App).use(createPinia()).use(router).use(ElementPlus).use(plugins).mount('#app')

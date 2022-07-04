@@ -1,0 +1,27 @@
+@import './theme-dark.scss';
+@import './theme-light.scss';
+$themes:(
+    light:$light,
+    dark:$dark
+);
+$theme-map: ();
+@mixin themify($themes: $themes) {
+    @each $theme-name, $map in $themes {
+      .#{$theme-name} & {
+        // $theme-map: () !global;
+        @each $key, $value in $map {
+          $theme-map: map-merge(
+            $theme-map,
+            (
+              $key: $value,
+            )
+          ) !global;
+        }
+        @content;
+        // $theme-map: null !global;
+      }
+    }
+};
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}

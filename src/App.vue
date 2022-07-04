@@ -5,9 +5,14 @@
 </template>
 
 <script setup lang="ts">
-import {testStore} from './stores/test'
-    const sotore = testStore()
-    console.log(sotore.testName)
+import {useThemeStore} from '@/stores/theme'
+import { watchEffect,toRefs} from 'vue';
+    const store = useThemeStore()
+    const {theme} = toRefs(store)
+    console.log(theme)
+    watchEffect(()=>{
+        document.querySelector('html')!.className = theme.value
+    })
 </script>
 <style>
 

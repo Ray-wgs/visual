@@ -17,7 +17,7 @@ import {toRefs,ref,watchEffect} from 'vue'
             type:Boolean,
             default:false
         },
-        // 跑马灯周期时间
+        // 跑马灯周期时间 ms
         runCycle:{
             type:Number,
             default:400
