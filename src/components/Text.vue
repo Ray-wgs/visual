@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang='ts' setup name="VsText">
+<script lang='ts' setup name="vsText">
 import {toRefs,ref,watchEffect} from 'vue'
     const props = defineProps({
         // 展示文本

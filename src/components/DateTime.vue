@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang='ts' setup name="VsDateTime">
+<script lang='ts' setup name="vsDateTime">
 import dayjs from 'dayjs'
 import {toRefs,ref} from 'vue'
     const props = defineProps({
