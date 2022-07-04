@@ -6,6 +6,20 @@
 
     </vs-date-time>
     <vs-text text="123" :running="running" ></vs-text>
+    <div class="icon-test">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-image"></use>
+        </svg>
+    </div>
+    <div>
+        <vs-colors-icon
+        iconData="icon-read"
+        type="class"
+        style="fontSize:50px"
+        >
+
+        </vs-colors-icon>
+    </div>
     <el-card>
             <span @click.stop="toggleDark()">暗黑模式</span>
             <el-switch size="small" v-model="isDark" @change="toggleDark"/>
@@ -73,5 +87,15 @@ const go =()=>{
     @include themify($themes) {
         background: themed("color1");
     }
+}
+.icon-test{
+    font-size: 56px;
+}
+.icon{
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 </style>
