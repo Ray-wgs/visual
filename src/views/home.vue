@@ -1,10 +1,16 @@
 <template>
-    HOME
+    <vs-date-time
+    realTime
+    format="YY-MM-DD"
+    >
+
+    </vs-date-time>
+    <vs-text text="123" :running="running" ></vs-text>
     <el-card>
             <span @click.stop="toggleDark()">暗黑模式</span>
             <el-switch size="small" v-model="isDark"/>
             <el-button @click="go">Default</el-button>
-            <el-button type="primary">Primary</el-button>
+            <el-button type="primary" @click="running = !running">Primary</el-button>
             <el-button type="success">Success</el-button>
             <el-button type="info">Info</el-button>
             <el-button type="warning">Warning</el-button>
@@ -46,6 +52,8 @@ const color1 = ref('')
 const value2 = ref('')
 const options = ref([{value:1,label:1}])
 const router = useRouter()
+const running = ref(true)
+const time = '2022-05-25'
 const go =()=>{
     router.push({path:'/test'})
 }
