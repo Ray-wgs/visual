@@ -20,6 +20,13 @@
 
         </vs-colors-icon>
     </div>
+    <div style="height:400px;width:400px">
+        <vs-chart
+        :option="option"
+        >
+
+        </vs-chart>
+    </div>
     <el-card>
             <span @click.stop="toggleDark()">暗黑模式</span>
             <el-switch size="small" v-model="isDark" @change="toggleDark"/>
@@ -61,6 +68,7 @@ import dayjs from 'dayjs'
 import { reactive, toRefs,ref,watchEffect} from 'vue'
 import { useRouter } from 'vue-router';
 import {useThemeStore} from '@/stores/theme'
+import * as echarts from "echarts";
 const store = useThemeStore()
 console.log(store)
 const isDark = ref(false)
@@ -79,6 +87,21 @@ const time = '2022-05-25'
 const go =()=>{
     router.push({path:'/test'})
 }
+const option = reactive<echarts.EChartOption>({
+  xAxis: {
+    type: 'category',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [150, 230, 224, 218, 135, 147, 260],
+      type: 'line'
+    }
+  ]
+})
 </script>
 <style scoped lang='scss'>
 .theme-text{
