@@ -8,6 +8,7 @@ export const useThemeStore = defineStore('themeStore',{
     actions:{
         setTheme(newTheme:string){
             this.theme = newTheme
+            localStorage.setItem("vs-theme",newTheme)
         }
     }
 })

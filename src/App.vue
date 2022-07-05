@@ -9,7 +9,13 @@ import {useThemeStore} from '@/stores/theme'
 import { watchEffect,toRefs} from 'vue';
     const store = useThemeStore()
     const {theme} = toRefs(store)
-    console.log(theme)
+    const localTheme = localStorage.getItem("vs-theme")
+    if(localTheme){
+        store.setTheme(localTheme)
+    }
+    window.addEventListener('beforeunload',()=>{
+        localStorage.setItem('vs-theme',theme.value)
+    })
     watchEffect(()=>{
         document.querySelector('html')!.className = theme.value
     })

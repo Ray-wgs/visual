@@ -71,7 +71,8 @@ import {useThemeStore} from '@/stores/theme'
 import * as echarts from "echarts";
 const store = useThemeStore()
 console.log(store)
-const isDark = ref(false)
+const theme = ref(store.theme)
+const isDark = ref(theme.value == 'dark')
 const toggleDark =()=>{
     let theme = isDark.value ? 'dark' : 'light'
     store.setTheme(theme)
