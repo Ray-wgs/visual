@@ -13,9 +13,6 @@ import { watchEffect,toRefs} from 'vue';
     if(localTheme){
         store.setTheme(localTheme)
     }
-    window.addEventListener('beforeunload',()=>{
-        localStorage.setItem('vs-theme',theme.value)
-    })
     watchEffect(()=>{
         document.querySelector('html')!.className = theme.value
     })
