@@ -16,7 +16,7 @@ import chartApi from './componentsApi/chart'
         },
         // 自定义图表的option
         option:{
-            type:Object as PropType<echarts.EChartsOption>
+            type:Object
         }
     })
     const {chartId,option} = toRefs(props)
@@ -48,14 +48,12 @@ import chartApi from './componentsApi/chart'
     const rsOb = new ResizeObserver((e)=>{
         if(timer) clearTimeout(timer)
         timer = window.setTimeout(() => {
-            console.log('********')
             try {
                 chart.resize()
             } catch (error) {
                 console.warn('chart重新设置大小失败')
             }
         }, 50);
-        console.log('-------')
     })
     // onMounted 钩子函数中获取dom并init echarts
     onMounted(()=>{
