@@ -1,6 +1,6 @@
 import *as three from "three"
 export interface vsThreeEventOps {
-    container:string,
+    container:string|Element|HTMLDivElement,
     eventType:string,
     callback:Function,
     camera:three.Camera,
