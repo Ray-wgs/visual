@@ -1,14 +1,14 @@
 <template>
     <div @mousedown="onDrag" ref="vsDragResizeDom" class="vs-drag-resize" :class="curActive ? 'vs-drag-resize-active' : ''">
-        <vs-colors-icon
-        iconData="icon-youxiajiao1"
-        type="class"
-        class="vs-resize-dom"
-        @mousedown.stop="onResize"
-        ref="vsResizeDom"
-        >
+        <div  class="vs-resize-dom">
+            <vs-colors-icon
+            iconData="icon-youxiajiao1"
+            type="class"
+            @mousedown.stop="onResize"
+            >
 
-        </vs-colors-icon>
+            </vs-colors-icon>
+        </div>
         <slot>
 
         </slot>
@@ -18,7 +18,6 @@
 <script lang='ts' setup name="vsDragResize">
 import { reactive, toRefs,ref} from 'vue'
     const vsDragResizeDom = ref()
-    const vsResizeDom = ref()
     const minh = 100
     const minw = 100
     const curActive = ref(false)
@@ -51,28 +50,26 @@ import { reactive, toRefs,ref} from 'vue'
         document.onmouseup = function() {
             document.onmousemove = null;
             document.onmouseup = null;
-            vsDragResizeDom.value.style.cursor = 'default'
             curActive.value = false
         }
     }
     const onResize = ()=>{
         const parentDom = vsDragResizeDom.value.parentElement
-        const node = vsResizeDom.value
         const event = window.event as MouseEvent
         event?.stopPropagation()
         event?.preventDefault()
         const height = vsDragResizeDom.value.clientHeight
         const width = vsDragResizeDom.value.clientWidth
-        const startX = event?.clientX
-        const startY = event?.clientY
+        const startX = event.clientX
+        const startY = event.clientY
         curActive.value = true
         const move = (moveEvent:MouseEvent) => {
-            const currX = moveEvent.clientX > parentDom.clientWidth ? parentDom.clientWidth - node.clientWidth/2 : moveEvent.clientX
-            const currY = moveEvent.clientY > parentDom.clientHeight ? parentDom.clientHeight - node.clientHeight/2: moveEvent.clientY
+            const currX = moveEvent.clientX 
+            const currY = moveEvent.clientY 
             const disY = currY - startY
             const disX = currX - startX
-            const newHeight = (height + disY) > minh ?  (height + disY) : minh
-            const newWidth = (width + disX) > minw ? (width + disX) : minw
+            const newHeight = (height + disY) > minh ?  (height + disY) > parentDom.clientHeight ? parentDom.clientHeight-40:(height + disY) : minh
+            const newWidth = (width + disX) > minw ? (width + disX) > parentDom.clientWidth ? parentDom.clientWidth-40 : (width + disX) : minw
             vsDragResizeDom.value.style.width = newWidth + "px";
             vsDragResizeDom.value.style.height = newHeight + "px";
             vsDragResizeDom.value.setAttribute('width',newWidth+'px')
