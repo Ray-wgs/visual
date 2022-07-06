@@ -24,9 +24,10 @@ import chartApi from './componentsApi/chart'
     let chartOption= ref({})
     // 随机生成id 用于dom的获取
     const domId = `vs-chart-${uuid()}`
+    let chart:echarts.EChartsType
     // echarts 初始化
     const init = ()=>{
-        let chart = echarts.init(document.querySelector(`#${domId}`)as HTMLDivElement)
+        chart = echarts.init(document.querySelector(`#${domId}`)as HTMLDivElement)
         chart.setOption(chartOption.value)
     }
     // 根据props 设置当前图表的配置项
@@ -42,9 +43,24 @@ import chartApi from './componentsApi/chart'
         chartOption.value = option!.value as echarts.EChartsOption
         console.log(chartOption)
     }
+    let timer:number
+    // 新增chart大小随动方法
+    const rsOb = new ResizeObserver((e)=>{
+        if(timer) clearTimeout(timer)
+        timer = window.setTimeout(() => {
+            console.log('********')
+            try {
+                chart.resize()
+            } catch (error) {
+                console.warn('chart重新设置大小失败')
+            }
+        }, 50);
+        console.log('-------')
+    })
     // onMounted 钩子函数中获取dom并init echarts
     onMounted(()=>{
         init()
+        rsOb.observe(document.querySelector(`#${domId}`) as Element)
     })
 </script>
 <style scoped lang='scss'>
