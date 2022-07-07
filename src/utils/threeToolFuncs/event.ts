@@ -9,7 +9,7 @@ const event = {
     * @param scene 三维场景用于计算物体和射线的焦点
     * @param callback 回调事件携带 触发事件的模型和鼠标事件
     */ 
-    addModelEvent:({container,eventType,camera,scene,callback}:vsThreeEventOps)=>{
+    setEvent:({container,eventType,camera,scene,callback}:vsThreeEventOps)=>{
 
         let raycaster = new three.Raycaster();
         let mouse = new three.Vector2();
