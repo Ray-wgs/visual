@@ -46,20 +46,21 @@
                 style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
             />
     </el-card>
+    <el-card>
+        <el-date-picker
+            v-model="value1"
+            type="date"
+            placeholder="Pick a day"
+        />
+        <el-button type="primary" @click="running = !running">Primary</el-button>
+        <el-button type="success" @click="go">three</el-button>
+        <el-button type="info">Info</el-button>
+        <el-button type="warning">Warning</el-button>
+        <el-button type="danger">Danger</el-button>
+    </el-card>
     <div class="contain">
         <vs-drag-resize class="theme-text" :key="1">
-            <el-card>
-                <el-date-picker
-                    v-model="value1"
-                    type="date"
-                    placeholder="Pick a day"
-                />
-                <el-button type="primary" @click="running = !running">Primary</el-button>
-                <el-button type="success">Success</el-button>
-                <el-button type="info">Info</el-button>
-                <el-button type="warning">Warning</el-button>
-                <el-button type="danger">Danger</el-button>
-            </el-card>
+            
         </vs-drag-resize>
         <vs-drag-resize :key="2">
             <vs-chart
@@ -76,7 +77,6 @@ import dayjs from 'dayjs'
 import { reactive, toRefs,ref,watchEffect} from 'vue'
 import { useRouter } from 'vue-router';
 import {useThemeStore} from '@/stores/theme'
-import vsChart from '@/components/Chart.vue'
 import * as echarts from "echarts";
 const store = useThemeStore()
 console.log(store)
@@ -95,7 +95,7 @@ const router = useRouter()
 const running = ref(true)
 const time = '2022-05-25'
 const go =()=>{
-    router.push({path:'/test'})
+    router.push({path:'/three'})
 }
 const option = reactive<echarts.EChartOption>({
     "title": {
@@ -148,7 +148,6 @@ const option = reactive<echarts.EChartOption>({
             ],
             "name": "1234561",
             "type": "line",
-            "showBackground": true
         },
         {
             "data": [
@@ -174,8 +173,7 @@ const option = reactive<echarts.EChartOption>({
                 "color": "rgba(9, 51, 135, 1)",
                 "position": "top"
             },
-            "barWidth": "22",
-            "showBackground": true
+            "barWidth": 22,
         }
     ],
     "tooltip": {
