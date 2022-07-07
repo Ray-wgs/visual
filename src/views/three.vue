@@ -11,11 +11,17 @@
     <el-button @click="initAxes">
         开启坐标轴
     </el-button>
+    <el-button @click="addCamera">
+        加载相机
+    </el-button>
     <el-button @click="updateCamera">
         更新相机
     </el-button>
     <el-button @click="updateModel">
         更新模型信息
+    </el-button>
+    <el-button @click="getSceneInfo">
+        遍历场景
     </el-button>
 </template>
 
@@ -25,8 +31,7 @@ import * as THREE from "three";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
-import event from '@/utils/threeToolFuncs/event'
-    console.log(event)
+import * as threeTools from '@/utils/threeToolFuncs/index'
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
     const renderer = ref<THREE.WebGLRenderer>(
@@ -41,13 +46,6 @@ import event from '@/utils/threeToolFuncs/event'
         addModel()
         addLight()
         // 设置相机
-        const s = 200
-        const k = vsThreeContainer.value.clientWidth / vsThreeContainer.value.clientHeight
-        camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
-        camera.position.set(0,15,0)
-        camera.lookAt(scene.position)
-        const cameraHelper = new THREE.CameraHelper(camera)
-        scene.add(cameraHelper)
         // 设置渲染尺寸为当前的dom的宽高
         renderer.value.setSize(vsThreeContainer.value.clientWidth,vsThreeContainer.value.clientHeight)
         // 渲染区域的背景颜色
@@ -55,14 +53,8 @@ import event from '@/utils/threeToolFuncs/event'
         // renderer.value.setClearColor('#ddd')
         vsThreeContainer.value.appendChild(renderer.value.domElement)
         renderer.value.render(scene,camera)
-        window.requestAnimationFrame(()=>{
-            renderer.value.render(scene, camera);
-        })
         initDragModel()
-        var controls = new OrbitControls(camera, renderer.value.domElement);
-        controls.addEventListener("change", () => {
-            renderer.value.render(scene, camera);
-        }); //监听鼠标、键盘事件
+       
     }
     const addModel = ()=>{
         let geometry = new THREE.BoxGeometry(20,20,20)
@@ -147,6 +139,23 @@ import event from '@/utils/threeToolFuncs/event'
             }
             renderer.value.render(scene,camera)
         })
+    }
+    const addCamera = ()=>{
+        const s = 200
+        const k = vsThreeContainer.value.clientWidth / vsThreeContainer.value.clientHeight
+        camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
+        camera.position.set(0,15,0)
+        camera.lookAt(scene.position)
+        const cameraHelper = new THREE.CameraHelper(camera)
+        scene.add(cameraHelper)
+        renderer.value.render(scene,camera)
+        var controls = new OrbitControls(camera, renderer.value.domElement);
+        controls.addEventListener("change", () => {
+            renderer.value.render(scene, camera);
+        }); //监听鼠标、键盘事件
+    }
+    const getSceneInfo = ()=>{
+        console.log(threeTools.model.getModelDetail(scene))
     }
     onMounted(()=>{
         init()
