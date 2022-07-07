@@ -64,8 +64,9 @@ import { reactive, toRefs,ref} from 'vue'
         const startY = event.clientY
         curActive.value = true
         const move = (moveEvent:MouseEvent) => {
-            const currX = moveEvent.clientX 
-            const currY = moveEvent.clientY 
+            // 盒子本身的padding导致要减去对应的距离
+            const currX = moveEvent.clientX - 40
+            const currY = moveEvent.clientY - 40
             const disY = currY - startY
             const disX = currX - startX
             const newHeight = (height + disY) > minh ?  (height + disY) > parentDom.clientHeight ? parentDom.clientHeight-40:(height + disY) : minh
@@ -97,9 +98,10 @@ import { reactive, toRefs,ref} from 'vue'
         bottom:0px;
         right:0px;
         font-size: 15px;
-        font-weight: 500;
+        font-weight: 600;
         width: 20px;
         height: 20px;
+        text-align: right;
         cursor: nw-resize;
         @include themify($themes) {
             color: themed("font-color1");
