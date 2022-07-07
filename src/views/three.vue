@@ -23,6 +23,9 @@
     <el-button @click="getSceneInfo">
         遍历场景
     </el-button>
+    <el-button @click="addCstmModel">
+        添加外部模型
+    </el-button>
 </template>
 
 <script lang='ts' setup name="three">
@@ -32,6 +35,7 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
 import * as threeTools from '@/utils/threeToolFuncs/index'
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
     const renderer = ref<THREE.WebGLRenderer>(
@@ -43,6 +47,7 @@ import * as threeTools from '@/utils/threeToolFuncs/index'
     )
     let camera:THREE.Camera 
     const init = ()=>{
+        addCamera()
         addModel()
         addLight()
         // 设置相机
@@ -82,12 +87,7 @@ import * as threeTools from '@/utils/threeToolFuncs/index'
     const initDragModel = ()=>{
         var transformControls = new TransformControls(camera,renderer.value.domElement);
         scene.add(transformControls);
-        let allowMesh = scene.children.filter(child=>{
-            if(child.isMesh){
-                return child
-            }
-        })
-        console.log(allowMesh)
+        let allowMesh = scene.children
         //实例化 dargControls
         var dragControls = new DragControls(allowMesh, camera, renderer.value.domElement);
         dragControls.addEventListener('hoveron', function( event ){
@@ -144,10 +144,10 @@ import * as threeTools from '@/utils/threeToolFuncs/index'
         const s = 200
         const k = vsThreeContainer.value.clientWidth / vsThreeContainer.value.clientHeight
         camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
-        camera.position.set(0,15,0)
+        camera.position.set(200,200,200)
         camera.lookAt(scene.position)
-        const cameraHelper = new THREE.CameraHelper(camera)
-        scene.add(cameraHelper)
+        // const cameraHelper = new THREE.CameraHelper(camera)
+        // scene.add(cameraHelper)
         renderer.value.render(scene,camera)
         var controls = new OrbitControls(camera, renderer.value.domElement);
         controls.addEventListener("change", () => {
@@ -156,6 +156,15 @@ import * as threeTools from '@/utils/threeToolFuncs/index'
     }
     const getSceneInfo = ()=>{
         console.log(threeTools.model.getModelDetail(scene))
+    }
+    const addCstmModel = ()=>{
+        let gltfLoader = new GLTFLoader()
+        gltfLoader.load('http://1.117.70.174:19090/models/BingDwenDwen/scene.gltf',(model)=>{
+            console.log(model.scene)
+            model.scene.scale.set(100,100,100)
+            scene.add(model.scene)
+            initDragModel()
+        }) 
     }
     onMounted(()=>{
         init()
