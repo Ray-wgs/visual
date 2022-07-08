@@ -11,6 +11,7 @@ import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
 import { reactive, toRefs,ref,onMounted} from 'vue'
 import threeFuncs from '@/utils/threeToolFuncs/index'
+import { AmbientLight } from "three";
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
     const renderer = new THREE.WebGLRenderer({ 
@@ -49,7 +50,10 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
         }); //监听鼠标、键盘事件
     }
     const initLight = ()=>{
-        let pointLight = new THREE.PointLight('#fff')
+        let amLight = threeFuncs.light.craeteLight({lType:'AmbientLight',lOpts:{color:'#ccc'}})
+        amLight.position.set(600,600,600)
+        scene.add(amLight)
+        let pointLight = threeFuncs.light.craeteLight({lType:'PointLight',lOpts:{color:'red'}})
         pointLight.position.set(600,600,600)
         scene.add(pointLight)
         renderer.render(scene,camera)

@@ -1,6 +1,7 @@
 import model from './model'
 import event from './event'
 import camera from './camera'
+import light from './light'
 export default {
     /**
      * 模型相关函数
@@ -13,5 +14,9 @@ export default {
     /**
      * 相机相关函数
     */
-    camera
+    camera,
+    /**
+     * 光源相关函数
+    */
+    light
 }

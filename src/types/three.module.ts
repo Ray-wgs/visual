@@ -27,3 +27,17 @@ export interface vsThreeCreateCameraOption{
     cLookAt:vsThreePoint,
     cOpts:vsThreeCameraOption
 }
+export interface vsThreeLightOption {
+    color?:THREE.ColorRepresentation,
+    intensity?:number,
+    distance?:number,
+    angle?:number,
+    penumbra?:number,
+    decay?:number,
+    skyColor?:THREE.ColorRepresentation,
+    groundColor?:THREE.ColorRepresentation,
+}
+export interface vsThreeCreateLightOption{
+    lType:string,
+    lOpts:vsThreeLightOption
+}
