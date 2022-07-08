@@ -34,7 +34,7 @@ import * as THREE from "three";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
-import * as threeTools from '@/utils/threeToolFuncs/index'
+import  threeTools from '@/utils/threeToolFuncs/index'
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
@@ -46,6 +46,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
         })
     )
     let camera:THREE.Camera 
+    let controls:OrbitControls
     const init = ()=>{
         addCamera()
         addModel()
@@ -87,22 +88,42 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
     const initDragModel = ()=>{
         var transformControls = new TransformControls(camera,renderer.value.domElement);
         scene.add(transformControls);
-        let allowMesh = scene.children
+        let allowMesh = scene.children.filter((child)=>{
+            return child.isMesh || child.isGroup
+        })
+        console.log(allowMesh)
         //实例化 dargControls
         var dragControls = new DragControls(allowMesh, camera, renderer.value.domElement);
+        console.log(dragControls,controls)
         dragControls.addEventListener('hoveron', function( event ){
+                console.log(event)
+                dragControls.activate();
                 transformControls.attach(event.object);
                 transformControls.setSize(0.4);
-            dragControls.addEventListener('dragstart', function (event) {
-               console.log('start',event)
-               dragControls.enabled = false
-            });
-            // 拖拽结束
-            dragControls.addEventListener('dragend', function (event) {
-                // controls.enabled = true;
-                console.log('end')
-                dragControls.enabled = true
-            });
+                controls.enabled = false
+        });
+         dragControls.addEventListener('dragstart', function (event) {
+            console.log('start',event)
+            
+        });
+        dragControls.addEventListener('hoveroff',function(event){
+            // transformControls.attach(event.object);
+            // transformControls.attach(null)
+            
+            controls.enabled = true
+        })
+        dragControls.addEventListener('drag',function(event){
+            console.log('drag',event)
+            renderer.value.render(scene, camera);
+            
+        })
+        // dragControls.deactivate();
+        // 拖拽结束
+        dragControls.addEventListener('dragend', function (event) {
+            console.log('end',event)
+            transformControls.detach()
+            // controls.enabled = true
+            renderer.value.render(scene, camera);
         });
     }
     const initGrid = ()=>{
@@ -149,7 +170,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
         // const cameraHelper = new THREE.CameraHelper(camera)
         // scene.add(cameraHelper)
         renderer.value.render(scene,camera)
-        var controls = new OrbitControls(camera, renderer.value.domElement);
+        controls = new OrbitControls(camera, renderer.value.domElement);
         controls.addEventListener("change", () => {
             renderer.value.render(scene, camera);
         }); //监听鼠标、键盘事件
@@ -159,9 +180,11 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
     }
     const addCstmModel = ()=>{
         let gltfLoader = new GLTFLoader()
-        gltfLoader.load('http://1.117.70.174:19090/models/BingDwenDwen/scene.gltf',(model)=>{
+        gltfLoader.load('http://1.117.70.174:19090/buildings/1F_ZT.gltf',(model)=>{
+            console.log(model)
             console.log(model.scene)
             model.scene.scale.set(100,100,100)
+            model.scene.position.set(0,0,0)
             scene.add(model.scene)
             initDragModel()
         }) 

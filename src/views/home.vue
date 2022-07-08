@@ -20,8 +20,10 @@
 
         </vs-colors-icon>
     </div>
-    <div style="height:400px;width:400px">
-        
+    <div style="height:800px;width:800px">
+        <vs-three>
+
+        </vs-three>
     </div>
     <el-card>
             <span @click.stop="toggleDark()">暗黑模式</span>
@@ -78,6 +80,7 @@ import { reactive, toRefs,ref,watchEffect} from 'vue'
 import { useRouter } from 'vue-router';
 import {useThemeStore} from '@/stores/theme'
 import * as echarts from "echarts";
+import vsThree from '@/components/Three.vue'
 const store = useThemeStore()
 console.log(store)
 const theme = ref(store.theme)
