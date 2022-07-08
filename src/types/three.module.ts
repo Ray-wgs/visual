@@ -39,5 +39,6 @@ export interface vsThreeLightOption {
 }
 export interface vsThreeCreateLightOption{
     lType:string,
+    lPosition:vsThreePoint,
     lOpts:vsThreeLightOption
 }
