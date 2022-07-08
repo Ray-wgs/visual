@@ -1,7 +1,17 @@
 import model from './model'
 import event from './event'
-
-export {
+import camera from './camera'
+export default {
+    /**
+     * 模型相关函数
+     */
     model,
-    event
+    /**
+     * 事件相关函数
+    */
+    event,
+    /**
+     * 相机相关函数
+    */
+    camera
 }
