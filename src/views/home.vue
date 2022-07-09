@@ -61,8 +61,10 @@
         <el-button type="danger">Danger</el-button>
     </el-card>
     <div class="contain">
-        <vs-drag-resize class="theme-text" :key="1">
-            
+        <vs-drag-resize class="theme-text" :key="1" @onDragEnd="getPointData" @onResizeEnd="getSizeData"> 
+            <vs-three >
+
+            </vs-three>
         </vs-drag-resize>
         <vs-drag-resize :key="2">
             <vs-chart
@@ -190,6 +192,12 @@ const option = reactive<echarts.EChartOption>({
         }
     },
 })
+const getPointData = (data:{top:string,left:string})=>{
+    console.log('point',data)
+}
+const getSizeData = (data:{width:string,height:string})=>{
+    console.log('size',data)
+}
 </script>
 <style scoped lang='scss'>
 .theme-text{
