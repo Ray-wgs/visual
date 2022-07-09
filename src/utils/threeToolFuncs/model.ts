@@ -2,6 +2,17 @@ import * as THREE from 'three'
 
 const model = {
     /** 
+    * 通过配置项生成相机
+    * @param {String} mType  要生成的相机类别，目前包含 OrthographicCamera,PerspectiveCamera
+    * @param {vsThreePoint} mPosition 相机的初始位置
+    * @param cLookAt  相机的朝向的点
+    * @param mOpts 相机的配置项，如可观测的位置的远近、视角的大小等
+    * @return camera 生成的相机实例
+    */ 
+    createModel : ()=>{
+
+    },
+    /** 
     * 移除模型(Removes object as child of this parentobject)
     * @param  models 要移除的模型数据或者模型数据组成的数组
     * @param  parent 删除的模型同属的父级

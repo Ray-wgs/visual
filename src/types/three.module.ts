@@ -25,7 +25,9 @@ export interface vsThreeCreateCameraOption{
     cType:string,
     cPosition:vsThreePoint,
     cLookAt:vsThreePoint,
-    cOpts:vsThreeCameraOption
+    cOpts:vsThreeCameraOption,
+    cName:string,
+    cId:number
 }
 export interface vsThreeLightOption {
     color?:THREE.ColorRepresentation,
@@ -40,5 +42,7 @@ export interface vsThreeLightOption {
 export interface vsThreeCreateLightOption{
     lType:string,
     lPosition:vsThreePoint,
-    lOpts:vsThreeLightOption
+    lOpts:vsThreeLightOption,
+    lName:string,
+    lId:number
 }
