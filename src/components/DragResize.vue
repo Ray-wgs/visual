@@ -16,11 +16,14 @@
 </template>
 
 <script lang='ts' setup name="vsDragResize">
+import event from '@/utils/threeToolFuncs/event';
+import { emit } from 'process';
 import { reactive, toRefs,ref} from 'vue'
     const vsDragResizeDom = ref()
     const minh = 100
     const minw = 100
     const curActive = ref(false)
+    const emits = defineEmits(['onDragEnd','onResizeEnd'])
     const onDrag = (e:MouseEvent)=>{
         const parentDom = vsDragResizeDom.value.parentElement
         parentDom.style.position = 'relative'
@@ -50,6 +53,7 @@ import { reactive, toRefs,ref} from 'vue'
         document.onmouseup = function() {
             document.onmousemove = null;
             document.onmouseup = null;
+            emits('onDragEnd',{left:vsDragResizeDom.value.style.left,top:vsDragResizeDom.value.style.top})
             curActive.value = false
         }
     }
@@ -80,6 +84,7 @@ import { reactive, toRefs,ref} from 'vue'
         const up = () => {
             document.removeEventListener('mousemove', move)
             document.removeEventListener('mouseup', up)
+            emits('onDragEnd',{height:vsDragResizeDom.value.style.height,width:vsDragResizeDom.value.style.width})
             curActive.value = false
         }
 
