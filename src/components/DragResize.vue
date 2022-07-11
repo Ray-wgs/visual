@@ -5,6 +5,7 @@
             iconData="icon-youxiajiao1"
             type="class"
             @mousedown.stop="onResize"
+            :style="{color:curActive? '' :'transparent'}"
             >
 
             </vs-colors-icon>
