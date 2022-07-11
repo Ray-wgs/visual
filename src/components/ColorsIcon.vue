@@ -26,6 +26,8 @@ import { reactive, toRefs,ref} from 'vue'
 </script>
 <style scoped lang='scss'>
 .iconfont {
+    width: 100%;
+    height: 100%;
     display: inline-block;
 }
 </style>

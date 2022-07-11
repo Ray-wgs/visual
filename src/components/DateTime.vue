@@ -47,6 +47,9 @@ import {toRefs,ref} from 'vue'
 </script>
 <style scoped lang='scss'>
 .vs-date-time{
+    width: 100%;
+    height: 100%;
+    line-height: normal;
     display: inline-block;
 }
 </style>

@@ -67,6 +67,8 @@ import {toRefs,ref,watchEffect} from 'vue'
 </script>
 <style scoped lang='scss'>
 .vs-text{
+    width: 100%;
+    height: 100%;
     display: inline-block;
 }
 </style>
