@@ -1,5 +1,5 @@
 <template>
-    <div class="board-container" ref="boardContainer">
+    <div class="board-container" ref="boardContainer" @click="active == 'null'">
         <vs-drag-resize
         v-for="(comp,index) in boardOption.comps"
         :key="comp.id"
@@ -7,6 +7,7 @@
         :style="{zIndex:index+1,...comp.style}"
         v-bind="comp.style"
         @onDragResize="updateComp"
+        @click.stop="active = comp.id"
         >
             <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
             
@@ -24,11 +25,13 @@
 <script lang='ts' setup>
 import { reactive, toRefs,ref,onMounted} from 'vue'
 import {vsDragResizeStyle} from '@/types/dragResize.module'
-const boardOption =ref({common:{threeBg:false,bg:''},comps:[
+import {vsContainerData} from '@/types/container.module'
+const boardOption =ref<vsContainerData>({common:{threeBg:false,bg:''},comps:[
     {tag:'vs-text',id:'1',propValue:{text:'12345678',running:true},style:{color:'#fff',width:'300px',height:'500px'}},
     {tag:'vs-date-time',id:'2',propValue:{realTime:true},style:{minh:20,minw:120}}
     ]})
 const boardContainer = ref()
+const active = ref<string|number>('null')
 const updateComp = (data:vsDragResizeStyle)=>{
     console.log(data)
     let compId = data.nodeKey
