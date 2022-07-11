@@ -18,10 +18,24 @@
 <script lang='ts' setup name="vsDragResize">
 import { reactive, toRefs,ref} from 'vue'
     const vsDragResizeDom = ref()
-    const minh = 100
-    const minw = 100
     const curActive = ref(false)
-    const emits = defineEmits(['onDragEnd','onResizeEnd'])
+    const props = defineProps({
+        minh:{
+            type:Number,
+            default:100
+        },
+        minw:{
+            type:Number,
+            default:100
+        },
+        // emit的id
+        nodeKey:{
+            type:String,
+            default:'nodeKey'
+        }
+    })
+    const {minh,minw,nodeKey} = toRefs(props)
+    const emits = defineEmits(['onDragResize'])
     const onDrag = (e:MouseEvent)=>{
         const parentDom = vsDragResizeDom.value.parentElement
         parentDom.style.position = 'relative'
@@ -51,7 +65,14 @@ import { reactive, toRefs,ref} from 'vue'
         document.onmouseup = function() {
             document.onmousemove = null;
             document.onmouseup = null;
-            emits('onDragEnd',{left:vsDragResizeDom.value.style.left,top:vsDragResizeDom.value.style.top})
+            console.log(vsDragResizeDom.value.clientHeight,vsDragResizeDom.value.style)
+            emits('onDragResize',{
+                left:vsDragResizeDom.value.style.left,
+                top:vsDragResizeDom.value.style.top,
+                height:vsDragResizeDom.value.style.height+'px',
+                width:vsDragResizeDom.value.style.width+'px',
+                nodeKey:nodeKey.value
+            })
             curActive.value = false
         }
     }
@@ -71,8 +92,8 @@ import { reactive, toRefs,ref} from 'vue'
             const currY = moveEvent.clientY - 40
             const disY = currY - startY
             const disX = currX - startX
-            const newHeight = (height + disY) > minh ?  (height + disY) > parentDom.clientHeight ? parentDom.clientHeight-40:(height + disY) : minh
-            const newWidth = (width + disX) > minw ? (width + disX) > parentDom.clientWidth ? parentDom.clientWidth-40 : (width + disX) : minw
+            const newHeight = (height + disY) > minh.value ?  (height + disY) > parentDom.clientHeight ? parentDom.clientHeight-40:(height + disY) : minh.value
+            const newWidth = (width + disX) > minw.value ? (width + disX) > parentDom.clientWidth ? parentDom.clientWidth-40 : (width + disX) : minw.value
             vsDragResizeDom.value.style.width = newWidth + "px";
             vsDragResizeDom.value.style.height = newHeight + "px";
             vsDragResizeDom.value.setAttribute('width',newWidth+'px')
@@ -82,7 +103,13 @@ import { reactive, toRefs,ref} from 'vue'
         const up = () => {
             document.removeEventListener('mousemove', move)
             document.removeEventListener('mouseup', up)
-            emits('onDragEnd',{height:vsDragResizeDom.value.style.height,width:vsDragResizeDom.value.style.width})
+            emits('onDragResize',{
+                left:vsDragResizeDom.value.style.left,
+                top:vsDragResizeDom.value.style.top,
+                height:vsDragResizeDom.value.style.height+'px',
+                width:vsDragResizeDom.value.style.width+'px',
+                nodeKey:nodeKey.value
+            })
             curActive.value = false
         }
 
@@ -93,8 +120,6 @@ import { reactive, toRefs,ref} from 'vue'
 <style scoped lang='scss'>
 .vs-drag-resize{
     position: absolute;
-    width: 400px;
-    height:400px;
     padding: 20px;
     .vs-resize-dom{
         position: absolute;
