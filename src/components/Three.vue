@@ -11,7 +11,6 @@ import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
 import { reactive, toRefs,ref,onMounted} from 'vue'
 import threeFuncs from '@/utils/threeToolFuncs/index'
-import { AmbientLight } from "three";
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
     const renderer = new THREE.WebGLRenderer({ 
@@ -24,7 +23,6 @@ import { AmbientLight } from "three";
     const init = ()=>{
         renderer.setSize(vsThreeContainer.value.clientWidth,vsThreeContainer.value.clientHeight)
         vsThreeContainer.value.appendChild(renderer.domElement)
-        // renderer.render(scene,camera)
     }
     const initCamera = ()=>{
         let obj = {

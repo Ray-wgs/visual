@@ -49,7 +49,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
     let controls:OrbitControls
     const init = ()=>{
         addCamera()
-        addModel()
+        // addModel()
         addLight()
         // 设置相机
         // 设置渲染尺寸为当前的dom的宽高
@@ -91,10 +91,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
         let allowMesh = scene.children.filter((child)=>{
             return child.isMesh || child.isGroup
         })
-        console.log(allowMesh)
+        console.log(scene.children,allowMesh)
         //实例化 dargControls
         var dragControls = new DragControls(allowMesh, camera, renderer.value.domElement);
-        console.log(dragControls,controls)
+        dragControls.transformGroup = true
         dragControls.addEventListener('hoveron', function( event ){
                 console.log(event)
                 dragControls.activate();
@@ -181,6 +181,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
     const addCstmModel = ()=>{
         let gltfLoader = new GLTFLoader()
         gltfLoader.load('http://1.117.70.174:19090/buildings/1F_ZT.gltf',(model)=>{
+            console.log(model)
+            console.log(model.scene)
+            model.scene.scale.set(100,100,100)
+            model.scene.position.set(0,0,0)
+            scene.add(model.scene)
+            initDragModel()
+        }) 
+        gltfLoader.load('http://1.117.70.174:19090/models/BingDwenDwen/scene.gltf',(model)=>{
             console.log(model)
             console.log(model.scene)
             model.scene.scale.set(100,100,100)
