@@ -56,7 +56,7 @@
         />
         <el-button type="primary" @click="running = !running">Primary</el-button>
         <el-button type="success" @click="go">three</el-button>
-        <el-button type="info">Info</el-button>
+        <el-button type="info" @click="goCon">Info</el-button>
         <el-button type="warning">Warning</el-button>
         <el-button type="danger">Danger</el-button>
     </el-card>
@@ -72,6 +72,12 @@
             >
 
             </vs-chart>
+        </vs-drag-resize>
+        <vs-drag-resize :key="3">
+            <img
+            style="width:100%;height:100%"
+            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2Ftp09%2F210F2130512J47-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1660099641&t=31b4092ad47c5ef5116a3dee66d24c35"
+            />
         </vs-drag-resize>
     </div>
 </template>
@@ -101,6 +107,9 @@ const running = ref(true)
 const time = '2022-05-25'
 const go =()=>{
     router.push({path:'/three'})
+}
+const goCon =()=>{
+     router.push({path:'/container'})
 }
 const option = reactive<echarts.EChartOption>({
     "title": {

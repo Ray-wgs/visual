@@ -14,6 +14,10 @@ const routes = [
         component:()=>import('@/views/three.vue')
     },
     {
+        path:'/container',
+        component:()=>import('@/views/container.vue')
+    },
+    {
         path:'/test',
         name:'test',
         component:()=>import('@/views/test.vue')
