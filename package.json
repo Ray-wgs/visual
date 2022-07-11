@@ -16,6 +16,7 @@
     "dayjs": "^1.11.3",
     "echarts": "^5.3.3",
     "element-plus": "^2.2.8",
+    "html2canvas": "^1.4.1",
     "pinia": "^2.0.14",
     "sass": "^1.53.0",
     "three": "^0.142.0",
