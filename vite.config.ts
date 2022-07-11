@@ -4,7 +4,9 @@ import { resolve } from 'path'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(),VueSetupExtend()],
+  plugins: [vue({
+    customElement:/vs/,
+  }),VueSetupExtend()],
   resolve: {
     // 配置路径别名
     alias: {
