@@ -16,8 +16,6 @@
 </template>
 
 <script lang='ts' setup name="vsDragResize">
-import event from '@/utils/threeToolFuncs/event';
-import { emit } from 'process';
 import { reactive, toRefs,ref} from 'vue'
     const vsDragResizeDom = ref()
     const minh = 100
