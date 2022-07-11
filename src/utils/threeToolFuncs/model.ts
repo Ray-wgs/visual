@@ -2,14 +2,14 @@ import * as THREE from 'three'
 
 const model = {
     /** 
-    * 通过配置项生成相机
-    * @param {String} mType  要生成的相机类别，目前包含 OrthographicCamera,PerspectiveCamera
-    * @param {vsThreePoint} mPosition 相机的初始位置
-    * @param cLookAt  相机的朝向的点
-    * @param mOpts 相机的配置项，如可观测的位置的远近、视角的大小等
-    * @return camera 生成的相机实例
+    * 通过配置项生成基础模型
+    * @param {String} mType  要生成的基础模型类别，目前包含 OrthographicCamera,PerspectiveCamera
+    * @param {vsThreePoint} mPosition 模型的初始位置
+    * @param mName  模型的名称
+    * @param mOpts 模型的配置项，如可观测的位置的远近、视角的大小等
+    * @return model 通过配置项创建的简单模型
     */ 
-    createModel : ()=>{
+    createBasicModel : ()=>{
 
     },
     /** 
