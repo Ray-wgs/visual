@@ -1,35 +1,11 @@
 <template>
-    <vs-date-time
-    :defaultTime="time"
-    format="YY-MM-DD HH:mm:ss"
-    >
-
-    </vs-date-time>
-    <vs-text text="123" :running="running" ></vs-text>
-    <div class="icon-test">
-        <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-image"></use>
-        </svg>
-    </div>
-    <div>
-        <vs-colors-icon
-        iconData="icon-read"
-        type="class"
-        style="fontSize:50px"
-        >
-
-        </vs-colors-icon>
-    </div>
-    <div style="height:800px;width:800px">
-        <vs-three>
-
-        </vs-three>
-    </div>
     <el-card>
             <span @click.stop="toggleDark()">暗黑模式</span>
             <el-switch size="small" v-model="isDark" @change="toggleDark"/>
             <el-button @click="go">Default</el-button>
-           
+            <el-button type="primary" @click="running = !running">Primary</el-button>
+            <el-button type="success" @click="go">three</el-button>
+            <el-button type="info" @click="goCon">Info</el-button>
             <el-button>中文</el-button>
             
             <el-color-picker v-model="color1" />
@@ -42,44 +18,7 @@
                 />
             </el-select>
             <el-slider v-model="value1" />
-            <el-switch
-                v-model="value2"
-                class="ml-2"
-                style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-            />
     </el-card>
-    <el-card>
-        <el-date-picker
-            v-model="value1"
-            type="date"
-            placeholder="Pick a day"
-        />
-        <el-button type="primary" @click="running = !running">Primary</el-button>
-        <el-button type="success" @click="go">three</el-button>
-        <el-button type="info" @click="goCon">Info</el-button>
-        <el-button type="warning">Warning</el-button>
-        <el-button type="danger">Danger</el-button>
-    </el-card>
-    <div class="contain">
-        <vs-drag-resize class="theme-text" :key="1" @onDragEnd="getPointData" @onResizeEnd="getSizeData"> 
-            <vs-three >
-
-            </vs-three>
-        </vs-drag-resize>
-        <vs-drag-resize :key="2">
-            <vs-chart
-            :option="option"
-            >
-
-            </vs-chart>
-        </vs-drag-resize>
-        <vs-drag-resize :key="3">
-            <img
-            style="width:100%;height:100%"
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2Ftp09%2F210F2130512J47-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1660099641&t=31b4092ad47c5ef5116a3dee66d24c35"
-            />
-        </vs-drag-resize>
-    </div>
 </template>
 
 <script lang='ts' setup>
