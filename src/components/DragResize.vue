@@ -87,13 +87,12 @@ import { reactive, toRefs,ref} from 'vue'
         const startY = event.clientY
         curActive.value = true
         const move = (moveEvent:MouseEvent) => {
-            // 盒子本身的padding导致要减去对应的距离
-            const currX = moveEvent.clientX - 40
-            const currY = moveEvent.clientY - 40
+            const currX = moveEvent.clientX
+            const currY = moveEvent.clientY
             const disY = currY - startY
             const disX = currX - startX
-            const newHeight = (height + disY) > minh.value ?  (height + disY) > parentDom.clientHeight ? parentDom.clientHeight-40:(height + disY) : minh.value
-            const newWidth = (width + disX) > minw.value ? (width + disX) > parentDom.clientWidth ? parentDom.clientWidth-40 : (width + disX) : minw.value
+            const newHeight = (height + disY) > minh.value ?  (height + disY) > parentDom.clientHeight ? parentDom.clientHeight:(height + disY) : minh.value
+            const newWidth = (width + disX) > minw.value ? (width + disX) > parentDom.clientWidth ? parentDom.clientWidth : (width + disX) : minw.value
             vsDragResizeDom.value.style.width = newWidth + "px";
             vsDragResizeDom.value.style.height = newHeight + "px";
             vsDragResizeDom.value.setAttribute('width',newWidth+'px')
@@ -120,19 +119,21 @@ import { reactive, toRefs,ref} from 'vue'
 <style scoped lang='scss'>
 .vs-drag-resize{
     position: absolute;
-    padding: 20px;
+    border: 1px dashed #ccc;
     .vs-resize-dom{
         position: absolute;
         bottom:0px;
         right:0px;
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 400;
         width: 20px;
         height: 20px;
+        line-height: 20px;
         text-align: right;
         cursor: nw-resize;
+        z-index: 50;
         @include themify($themes) {
-            color: themed("font-color1");
+            color: themed("font-color2");
         }
         &:hover{
             font-weight: 700;
@@ -142,7 +143,7 @@ import { reactive, toRefs,ref} from 'vue'
 }
 .vs-drag-resize-active{
     position: absolute;
-    border: 1px dashed #ccc;
+    border: 1px dashed themed("bg-color1");
     cursor: move;
     @include themify($themes) {
         background: themed("bg-color1");
