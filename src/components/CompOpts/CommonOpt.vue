@@ -12,6 +12,9 @@
     <el-form-item label="文字粗细">
         <el-input-number v-model="curCompOpt.style.fontWeight" :min="100" :max="700" :step="100" show-alpha />
     </el-form-item>
+    <el-form-item label="行高">
+        <el-input-number v-model="curCompOpt.style.lineHeight" :min="0" :max="100" :step="0.1" show-alpha />
+    </el-form-item>
     <el-form-item label="对齐方式">
         <el-select v-model="curCompOpt.style.textAlign">
             <el-option

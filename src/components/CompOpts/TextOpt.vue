@@ -1,4 +1,5 @@
 <template>
+    <vs-common-opt></vs-common-opt>
     <el-form-item label="展示文本">
         <el-input
             v-model="curCompOpt.propValue.text"
@@ -35,6 +36,7 @@
 import { useBoardStore } from '@/stores/board';
 import {useCompOptStore} from '@/stores/compOpt'
 import {storeToRefs} from 'pinia'
+import vsCommonOpt from './CommonOpt.vue';
 const store = useBoardStore()
 const optStore = useCompOptStore()
 const {curCompOpt} = storeToRefs(store)
