@@ -5,7 +5,6 @@
             iconData="icon-youxiajiao1"
             type="class"
             @mousedown.stop="onResize"
-            :style="{color:curActive? '' :'transparent'}"
             >
 
             </vs-colors-icon>
@@ -70,8 +69,8 @@ import { reactive, toRefs,ref} from 'vue'
             emits('onDragResize',{
                 left:vsDragResizeDom.value.style.left,
                 top:vsDragResizeDom.value.style.top,
-                height:vsDragResizeDom.value.style.height+'px',
-                width:vsDragResizeDom.value.style.width+'px',
+                height:vsDragResizeDom.value.style.height,
+                width:vsDragResizeDom.value.style.width,
                 nodeKey:nodeKey.value
             })
             curActive.value = false
@@ -107,8 +106,8 @@ import { reactive, toRefs,ref} from 'vue'
             emits('onDragResize',{
                 left:vsDragResizeDom.value.style.left,
                 top:vsDragResizeDom.value.style.top,
-                height:vsDragResizeDom.value.style.height+'px',
-                width:vsDragResizeDom.value.style.width+'px',
+                height:vsDragResizeDom.value.style.height,
+                width:vsDragResizeDom.value.style.width,
                 nodeKey:nodeKey.value
             })
             curActive.value = false
