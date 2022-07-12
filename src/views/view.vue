@@ -21,11 +21,18 @@
 </template>
 
 <script lang='ts' setup name="vsBoardView">
-import { reactive, toRefs,ref} from 'vue'
+import { reactive, toRefs,ref,onMounted} from 'vue'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
-const store = useBoardStore()
-const {boardOpt} = storeToRefs(store)
+    const store = useBoardStore()
+    const {boardOpt} = storeToRefs(store)
+    const boardContainer = ref()
+    
+    onMounted(()=>{
+        if(!boardOpt.value.common.threeBg){
+            boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
+        }
+    })
 </script>
 <style scoped lang='scss'>
 .board-container{

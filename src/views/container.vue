@@ -95,7 +95,7 @@ onMounted(()=>{
 watch(active,(newVal,oldVal)=>{
     store.setCurComp(boardOpt.value.comps.find((e)=>{return e.id == active.value}) as vsContainerComp )
 })
-watch(boardOpt.value.common.bg,()=>{
+watch(()=>boardOpt.value.common.bg,()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
