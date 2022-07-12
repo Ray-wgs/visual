@@ -20,6 +20,9 @@
 
         </vs-three>
     </div>
+    <div style="position:absolute;top:0;left:0;width:150px;zIndex:50;background-color: #fff;" >
+        <vs-layer-opt />
+    </div>
     <div style="position:absolute;top:0;right:0;width:300px;zIndex:50;background-color: #fff;" v-if="active != 'null'">
         <el-form :model="curCompOpt" label-width="120px">
             <vs-date-time-opt v-if="curCompOpt.tag == 'vs-date-time'" />
@@ -39,12 +42,12 @@ import { reactive, toRefs,ref,onMounted,watch,computed} from 'vue'
 import {vsDragResizeStyle} from '@/types/dragResize.module'
 import {vsContainerData,obj,vsContainerComp} from '@/types/container.module'
 import html2canvas from 'html2canvas'
-import vsConfigCommon from '@/components/configStyle/common.vue'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
 import vsCommonOpt from '@/components/CompOpts/CommonOpt.vue'
 import vsTextOpt from '@/components/CompOpts/TextOpt.vue'
 import vsDateTimeOpt from '@/components/CompOpts/DateTimeOpt.vue'
+import vsLayerOpt from '@/components/CompOpts/LayerOpt.vue'
 const store = useBoardStore()
 const {boardOpt,curCompOpt} = storeToRefs(store)
 const boardContainer = ref()
