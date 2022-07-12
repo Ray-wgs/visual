@@ -1,44 +1,55 @@
 <template>
-    <div class="board-container" ref="boardContainer" @click="active == 'null'">
-        <vs-drag-resize
-        v-for="(comp,index) in boardOpt.comps"
-        :key="comp.id"
-        :nodeKey="comp.id"
-        :style="{zIndex:index+1,...comp.style}"
-        v-bind="comp.style"
-        @onDragResize="updateComp"
-        @click.stop="active = comp.id"
-        >
-            <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
-            
-            </component>
-        </vs-drag-resize>
-        <vs-three
-        v-if="boardOpt.common.threeBg"
-        class="board-three-bg"
-        >
+    <div class="vs-header">
+        <span>是否开启三维场景</span> 
+        <el-switch v-model="boardOpt.common.threeBg">
 
-        </vs-three>
-    </div>
-    <div style="position:absolute;top:0;left:0;width:150px;zIndex:50;background-color: #fff;" >
-        <vs-layer-opt />
-    </div>
-    <div style="position:absolute;top:0;right:0;width:300px;zIndex:50;background-color: #fff;" v-if="active != 'null'">
-        <el-form :model="curCompOpt" label-width="120px">
-            <vs-date-time-opt v-if="curCompOpt.tag == 'vs-date-time'" />
-            <vs-text-opt v-if="curCompOpt.tag == 'vs-text'"/>
-            <vs-common-opt>
+        </el-switch>
+        <span>普通背景</span>
+        <el-input v-model="boardOpt.common.bg" style="width: 50px;">
 
-            </vs-common-opt>
-        </el-form>
+        </el-input>
+        <el-button @click="view">
+            预览
+        </el-button>
     </div>
-    <el-button @click="onSave">
+    <div class="vs-container">
+        <div class="vs-layer">
+            <vs-layer-opt />
+        </div>
+        <div class="vs-board">
+            <div class="board-container" ref="boardContainer" @click="active == 'null'" >
+                <vs-drag-resize
+                v-for="(comp,index) in boardOpt.comps"
+                :key="comp.id"
+                :nodeKey="comp.id"
+                :style="{zIndex:index+1,...comp.style}"
+                v-bind="comp.style"
+                @onDragResize="updateComp"
+                @click.stop="active = comp.id"
+                >
+                    <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
+                    
+                    </component>
+                </vs-drag-resize>
+                <vs-three
+                v-if="boardOpt.common.threeBg"
+                class="board-three-bg"
+                >
 
-    </el-button>
+                </vs-three>
+            </div>
+        </div>
+        <div class="vs-opt" >
+            <el-form :model="curCompOpt" label-width="120px" v-if="active != 'null'">
+                <vs-date-time-opt v-if="curCompOpt.tag == 'vs-date-time'" />
+                <vs-text-opt v-if="curCompOpt.tag == 'vs-text'"/>
+            </el-form>
+        </div>
+    </div>
 </template>
 
 <script lang='ts' setup>
-import { reactive, toRefs,ref,onMounted,watch,computed} from 'vue'
+import { reactive, toRefs,ref,onMounted,watch,nextTick,watchEffect} from 'vue'
 import {vsDragResizeStyle} from '@/types/dragResize.module'
 import {vsContainerData,obj,vsContainerComp} from '@/types/container.module'
 import html2canvas from 'html2canvas'
@@ -48,6 +59,8 @@ import vsCommonOpt from '@/components/CompOpts/CommonOpt.vue'
 import vsTextOpt from '@/components/CompOpts/TextOpt.vue'
 import vsDateTimeOpt from '@/components/CompOpts/DateTimeOpt.vue'
 import vsLayerOpt from '@/components/CompOpts/LayerOpt.vue'
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const store = useBoardStore()
 const {boardOpt,curCompOpt} = storeToRefs(store)
 const boardContainer = ref()
@@ -61,41 +74,68 @@ const updateComp = (data:vsDragResizeStyle)=>{
     })
     if(comp) comp.style = {...comp.style,...data}
 }
-const setDragResizeStyle=(index:number,style:obj)=>{
-    return {
-        zIndex:index+1,
-        left:style.left,
-        top:style.top,
-        width:style.width,
-        height:style.height,
-    }
+const view = ()=>{
+    router.push({path:'/view'})
 }
-const optComponent = computed(()=>{
-    console.log(curCompOpt.value.tag + '-opt')
-    return curCompOpt.value.tag + '-opt'
-})
-const onSave = async ()=>{
-     let canvas = await html2canvas(boardContainer.value)
-     console.log(canvas)
-     console.log(canvas.toDataURL("image/png"))
-}
+const translateX = ref(1)
+const translateY = ref(1)
 onMounted(()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
+    nextTick(()=>{
+        translateX.value = boardContainer.value.clientWidth/1920
+        translateY.value = boardContainer.value.clientHeight/1080
+        boardContainer.value.style.height = '1080px'
+        boardContainer.value.style.width = '1920px'
+        console.log(boardContainer.value.clientWidth,translateX.value)
+        // boardContainer.value.style.transform = `scale(${translateX.value},${translateY.value})`
+    })
 })
 watch(active,(newVal,oldVal)=>{
     store.setCurComp(boardOpt.value.comps.find((e)=>{return e.id == active.value}) as vsContainerComp )
 })
+watch(boardOpt.value.common.bg,()=>{
+    if(!boardOpt.value.common.threeBg){
+        boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
+    }
+})
 </script>
 <style scoped lang='scss'>
-.board-container{
-    position: relative;
+.vs-header{
+    height:60px;
     width: 100%;
-    height:100vh;
-    background-size: 100% 100%;
-    .board-three-bg{
-        position: relative;
+}
+.vs-container{
+    display: flex;
+    width:100%;
+    height:calc(100vh - 60px);
+    .vs-layer{
+        width:120px;
+        box-shadow: 0 0 6px 2px #ccc;
+    }
+    .vs-board{
+        width: calc(100% - 460px);
+        height:100%;
+        margin:0 10px;
+        overflow: auto;
+        box-shadow: 0 0 6px 2px #ccc;
+        .board-container{
+            position: relative;
+            width: 1920px;
+            height:1080px;
+            background-size: 100% 100%;
+            .board-three-bg{
+                position: relative;
+            }
+        }
+    }
+    
+    .vs-opt{
+        width:300px;
+        padding: 0 10px;
+        box-shadow: 0 0 6px 2px #ccc;
     }
 }
+
 </style>
