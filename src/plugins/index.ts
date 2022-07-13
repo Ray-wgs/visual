@@ -30,12 +30,14 @@ import Chart from '@/components/Chart.vue'
 import ColorsIcon from '@/components/ColorsIcon.vue'
 import DateTime from '@/components/DateTime.vue'
 import DragResize from '@/components/DragResize.vue'
+import Table from '@/components/Table.vue'
 import Text from '@/components/Text.vue'
 import Three from '@/components/Three.vue'
 
 import CommonOpt from '@/components/CompOpts/CommonOpt.vue'
 import DateTimeOpt from '@/components/CompOpts/DateTimeOpt.vue'
 import LayerOpt from '@/components/CompOpts/LayerOpt.vue'
+import TableOpt from '@/components/CompOpts/TableOpt.vue'
 import TextOpt from '@/components/CompOpts/TextOpt.vue'
 import ImgOpt from '@/components/CompOpts/ImgOpt.vue'
 const install = (app:App<Element>)=>{
@@ -43,11 +45,14 @@ const install = (app:App<Element>)=>{
     app.component(ColorsIcon.name,ColorsIcon)
     app.component(DateTime.name,DateTime)
     app.component(DragResize.name,DragResize)
+    app.component(Table.name,Table)
     app.component(Text.name,Text)
     app.component(Three.name,Three)
+
     app.component(CommonOpt.name,CommonOpt)
     app.component(DateTimeOpt.name,DateTimeOpt)
     app.component(LayerOpt.name,LayerOpt)
+    app.component(TableOpt.name,TableOpt)
     app.component(TextOpt.name,TextOpt)
     app.component(ImgOpt.name,ImgOpt)
 
