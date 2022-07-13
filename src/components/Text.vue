@@ -1,11 +1,11 @@
 <template>
-    <div @click="onClickOpenUrl" class="vs-text">
-        {{label}}
+    <div @click="onClickOpenUrl" class="vs-text-container">
+        <span class="vs-text" :class="running ? 'running' :''">{{text}}</span>
     </div>
 </template>
 
 <script lang='ts' setup name="vsText">
-import {toRefs,ref,watchEffect} from 'vue'
+import {toRefs,ref,watch,onMounted,computed} from 'vue'
     const props = defineProps({
         // 展示文本
         text:{
@@ -40,35 +40,35 @@ import {toRefs,ref,watchEffect} from 'vue'
             }
         }
     })
-    const {running,runCycle,isURL,url,openType} = toRefs(props)
+    const {running,runCycle,isURL,url,openType,text} = toRefs(props)
+    const runCycleA = computed(()=>{
+        return runCycle.value + 'ms'
+    })
     let timer:number|undefined
-    // 展示的label
-    const label = ref(props.text)
-    // 字体滚动
-    const runText = ()=>{
-        timer =  window.setTimeout(() => {
-            label!.value = label!.value!.substring(1)+ label!.value!.substring(0,1)
-            runText()
-        }, runCycle.value);
-    }
     // 打开超链接
     const onClickOpenUrl = ()=>{
         if(isURL.value){
             window.open(url?.value,openType.value)
         }
     }
-    watchEffect(()=>{
-        if(running.value){
-            runText()
-        }else{
-            if(timer) clearTimeout(timer)
-        }
-    })
 </script>
 <style scoped lang='scss'>
-.vs-text{
+.vs-text-container{
     width: 100%;
     height: 100%;
     display: inline-block;
+    overflow: hidden;
+    .vs-text{
+        display: inline-block;
+        padding-left: 0;
+    }
+    .running{
+        animation: marqueeTransform v-bind(runCycleA) linear infinite;
+        padding-left:100%;
+    }
+    @keyframes marqueeTransform {
+        0%   { transform: translate(0, 0); }
+        100% { transform: translate(-100%, 0); }
+    }
 }
 </style>
