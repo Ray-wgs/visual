@@ -89,6 +89,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
         var transformControls = new TransformControls(camera,renderer.value.domElement);
         scene.add(transformControls);
         let allowMesh = scene.children.filter((child)=>{
+            // @ts-ignore
             return child.isMesh || child.isGroup
         })
         console.log(scene.children,allowMesh)
@@ -150,6 +151,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
                  updateModel()   
         })
         scene.children.forEach(child=>{
+            // @ts-ignore
             if(child.isMesh){
                 if(child.position.x > 50){
                     // 
