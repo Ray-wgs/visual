@@ -48,7 +48,7 @@
 </template>
 
 <script lang='ts' setup>
-import { reactive, toRefs,ref,onMounted,watch,nextTick,watchEffect} from 'vue'
+import { reactive, toRefs,ref,onMounted,watch,nextTick,watchEffect,computed} from 'vue'
 import {vsDragResizeStyle} from '@/types/dragResize.module'
 import {vsContainerData,obj,vsContainerComp} from '@/types/container.module'
 import html2canvas from 'html2canvas'
@@ -72,8 +72,7 @@ const updateComp = (data:vsDragResizeStyle)=>{
 const view = ()=>{
     router.push({path:'/view'})
 }
-const translateX = ref(1)
-const translateY = ref(1)
+
 onMounted(()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`

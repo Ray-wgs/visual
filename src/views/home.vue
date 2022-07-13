@@ -5,7 +5,7 @@
             <el-button @click="go">Default</el-button>
             <el-button type="primary" @click="running = !running">Primary</el-button>
             <el-button type="success" @click="go">three</el-button>
-            <el-button type="info" @click="goCon">Info</el-button>
+            <el-button type="info" @click="goCon">配置看板</el-button>
             <el-button>中文</el-button>
             
             <el-color-picker v-model="color1" />
