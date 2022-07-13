@@ -25,7 +25,7 @@
                 :style="{zIndex:index+1,...comp.style}"
                 v-bind="comp.style"
                 @onDragResize="updateComp"
-                @click.stop="active = comp.id"
+                @click="active = comp.id"
                 >
                     <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
                     
@@ -41,8 +41,7 @@
         </div>
         <div class="vs-opt" >
             <el-form :model="curCompOpt" label-width="120px" v-if="active != 'null'">
-                <vs-date-time-opt v-if="curCompOpt.tag == 'vs-date-time'" />
-                <vs-text-opt v-if="curCompOpt.tag == 'vs-text'"/>
+                <component :is="curCompOpt.optComp"></component>
             </el-form>
         </div>
     </div>
@@ -55,10 +54,6 @@ import {vsContainerData,obj,vsContainerComp} from '@/types/container.module'
 import html2canvas from 'html2canvas'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
-import vsCommonOpt from '@/components/CompOpts/CommonOpt.vue'
-import vsTextOpt from '@/components/CompOpts/TextOpt.vue'
-import vsDateTimeOpt from '@/components/CompOpts/DateTimeOpt.vue'
-import vsLayerOpt from '@/components/CompOpts/LayerOpt.vue'
 import { useRouter } from 'vue-router';
 const router = useRouter()
 const store = useBoardStore()
@@ -83,14 +78,6 @@ onMounted(()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
-    nextTick(()=>{
-        translateX.value = boardContainer.value.clientWidth/1920
-        translateY.value = boardContainer.value.clientHeight/1080
-        boardContainer.value.style.height = '1080px'
-        boardContainer.value.style.width = '1920px'
-        console.log(boardContainer.value.clientWidth,translateX.value)
-        // boardContainer.value.style.transform = `scale(${translateX.value},${translateY.value})`
-    })
 })
 watch(active,(newVal,oldVal)=>{
     store.setCurComp(boardOpt.value.comps.find((e)=>{return e.id == active.value}) as vsContainerComp )

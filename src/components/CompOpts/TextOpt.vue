@@ -36,7 +36,6 @@
 import { useBoardStore } from '@/stores/board';
 import {useCompOptStore} from '@/stores/compOpt'
 import {storeToRefs} from 'pinia'
-import vsCommonOpt from './CommonOpt.vue';
 const store = useBoardStore()
 const optStore = useCompOptStore()
 const {curCompOpt} = storeToRefs(store)
