@@ -2,7 +2,6 @@
     <el-form-item label="字体大小">
         <vs-input-number
             :strValue="curCompOpt.style.fontSize"
-            controls-position="right"
             @onChange="(fontSize:string)=>{curCompOpt.style.fontSize = fontSize}"
         >
         </vs-input-number>

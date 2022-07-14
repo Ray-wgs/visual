@@ -25,8 +25,9 @@ export const useBoardStore = defineStore('boardStore',{
                             {tag:'vs-drag-resize',time:'2022-07-13',id:'6',status:'完成'},
                             {tag:'vs-three',time:'2022-07-13',id:'7',status:'完善中'},
                         ],
-                        tableConfig:[
-                            {
+                        tableConfig:{
+                            common:{},
+                            column:[{
                                 prop:'tag',
                                 label:'组件名',
                                 width:20,
@@ -37,8 +38,8 @@ export const useBoardStore = defineStore('boardStore',{
                                 label:'状态',
                                 width:20,
                                 id:'2'
-                            }
-                        ]
+                            }]
+                        }
                     },style:{
                         width:'400px',
                         height:'400px'

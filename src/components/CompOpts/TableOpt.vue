@@ -1,34 +1,48 @@
 <template>
-    <el-button @click="onViewData">
-        查看源数据
-    </el-button>
-    <el-tabs
-        v-model="actvieTab"
-        type="card"
-        editable
-        class="vs-tabs"
-        @edit="handleTabsEdit"
-    >
-        <el-tab-pane
-        v-for="(config,index) in curCompOpt.propValue.tableConfig"
-        :key="config.id"
-        :label="'第'+(index+1)+'列'"
-        :name="config.id"
+    <el-form-item label="表格数据">
+        <el-link @click="onViewData">
+            查看源数据
+        </el-link>
+    </el-form-item>
+    <el-form-item label="是否带斑马纹">
+        <el-switch v-model="curCompOpt.propValue.tableConfig.common.stripe"></el-switch>  
+    </el-form-item>
+    <el-form-item label="是否带边框">
+        <el-switch v-model="curCompOpt.propValue.tableConfig.common.border"></el-switch>  
+    </el-form-item>
+    <el-form-item label="配置表格">
+        <el-tabs
+            v-model="actvieTab"
+            type="card"
+            editable
+            class="vs-tabs"
+            @edit="handleTabsEdit"
         >
-            <el-form-item label="id">
-                <el-input v-model="config.id" readonly ></el-input>
-            </el-form-item>
-            <el-form-item label="字段">
-                <el-input v-model="config.prop"></el-input>
-            </el-form-item>
-            <el-form-item label="列名">
-                <el-input v-model="config.label"></el-input>
-            </el-form-item>
-            <el-form-item label="宽度">
-                <el-input-number v-model="config.width" :min="0"></el-input-number>
-            </el-form-item>
-        </el-tab-pane>
-    </el-tabs>
+            <el-tab-pane
+            v-for="(config,index) in curCompOpt.propValue.tableConfig.column"
+            :key="config.id"
+            :label="'第'+(index+1)+'列'"
+            :name="config.id"
+            >
+                <el-form-item label="id">
+                    <el-input v-model="config.id" readonly ></el-input>
+                </el-form-item>
+                <el-form-item label="字段">
+                    <el-input v-model="config.prop"></el-input>
+                </el-form-item>
+                <el-form-item label="列名">
+                    <el-input v-model="config.label"></el-input>
+                </el-form-item>
+                <el-form-item label="宽度">
+                    <el-input-number v-model="config.width" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="是否可排序">
+                    <el-switch v-model="config.sortable"></el-switch>  
+                </el-form-item>
+            </el-tab-pane>
+        </el-tabs>
+    </el-form-item>
+    
     <el-dialog
     v-model = 'dialogShow'
     title="此表格源数据"
@@ -51,7 +65,7 @@
 </template>
 
 <script lang='ts' setup name="vsTableOpt">
-import {vsTableConfig} from'@/types/table.module'
+import {vsTableColumnConfig} from'@/types/table.module'
 import { useBoardStore } from '@/stores/board';
 import {useCompOptStore} from '@/stores/compOpt'
 import {storeToRefs} from 'pinia'
@@ -71,29 +85,31 @@ const handleTabsEdit = (targetName: string, action: 'remove' | 'add')=>{
     }
 }
 const remove = ()=>{
-    curCompOpt.value.propValue.tableConfig = curCompOpt.value.propValue.tableConfig.filter((column:vsTableConfig)=>{
+    curCompOpt.value.propValue.tableConfig.column = curCompOpt.value.propValue.tableConfig.column.filter((column:vsTableColumnConfig)=>{
         return column.id != actvieTab.value
     })
-    actvieTab.value = curCompOpt.value.propValue.tableConfig[0].id
+    actvieTab.value = curCompOpt.value.propValue.tableConfig.column[0].id
 }
 const add = ()=>{
-    if(curCompOpt.value.propValue.tableConfig){
-        curCompOpt.value.propValue.tableConfig.push({
+    if(curCompOpt.value.propValue.tableConfig.column){
+        curCompOpt.value.propValue.tableConfig.column.push({
             id:uuid(),
             prop:'字段英文名',
             label:'列名',
             width:150
         })
     }else{
-        curCompOpt.value.propValue['tableConfig'] = [{
+        curCompOpt.value.propValue['tableConfig'].column = [{
             id:uuid(),
             prop:'字段英文名',
             label:'列名',
             width:150
         }]
     }
-    actvieTab.value = curCompOpt.value.propValue.tableConfig[curCompOpt.value.propValue.tableConfig.length - 1].id
+    actvieTab.value = curCompOpt.value.propValue.tableConfig.column[curCompOpt.value.propValue.tableConfig.column.length - 1].id
 }
+actvieTab.value = curCompOpt.value.propValue.tableConfig.column[0].id
+
 const dialogShow = ref(false)
 const viewTableConfig = ref<vsTableConfig2[]>([])
 const onViewData = ()=>{
@@ -113,6 +129,9 @@ const onViewData = ()=>{
 }
 </script>
 <style scoped lang='scss'>
+.vs-tabs{
+    width: 100%;
+}
 .vs-view-data{
     height: 600px;
 }
