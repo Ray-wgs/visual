@@ -69,9 +69,7 @@
             </div>
         </div>
         <div class="vs-opt" >
-            <el-form :model="curCompOpt" label-width="80px" label-position="top"  v-if="curCompOpt">
-                <component :is="curCompOpt.optComp"></component>
-            </el-form>
+            <vs-panel-opt v-if="JSON.stringify(curCompOpt) !=='{}'" />
         </div>
     </div>
 </template>
