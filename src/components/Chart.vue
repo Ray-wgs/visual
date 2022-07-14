@@ -1,6 +1,8 @@
 <template>
-    <div class="vs-chart" :id="domId">
+    <div class="vs-chart-container">
+        <div class="vs-chart" :id="domId">
 
+        </div>
     </div>
 </template>
 
@@ -62,8 +64,13 @@ import chartApi from './componentsApi/chart'
     })
 </script>
 <style scoped lang='scss'>
-.vs-chart{
+.vs-chart-container{
     width: 100%;
     height:100%;
+    .vs-chart{
+        width: 100%;
+        height:100%;
+    }
 }
+
 </style>
