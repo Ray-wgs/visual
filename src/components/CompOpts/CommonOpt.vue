@@ -1,10 +1,11 @@
 <template>
     <el-form-item label="字体大小">
-        <el-input-number
-            :modelValue="curCompOpt.style.fontSize"
-            :min="0"
+        <vs-input-number
+            :strValue="curCompOpt.style.fontSize"
+            controls-position="right"
+            @onChange="(fontSize:string)=>{curCompOpt.style.fontSize = fontSize}"
         >
-        </el-input-number>
+        </vs-input-number>
     </el-form-item>
     <el-form-item label="字体颜色">
         <el-color-picker v-model="curCompOpt.style.color" show-alpha />
