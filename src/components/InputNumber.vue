@@ -17,10 +17,12 @@ const props = defineProps({
 const emits = defineEmits(['onChange'])
 const {strValue,unit} = toRefs(props)
 const numVal = ref()
-numVal.value = parseInt(strValue.value)
 const change = ()=>{
     emits('onChange',numVal.value+unit.value)
 }
+watchEffect(()=>{
+    numVal.value = parseInt(strValue.value)
+})
 </script>
 <style scoped lang='scss'>
 </style>
