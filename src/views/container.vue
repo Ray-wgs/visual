@@ -17,7 +17,7 @@
             <vs-layer-opt />
         </div>
         <div class="vs-board">
-            <div class="board-container" ref="boardContainer" @click="active == 'null'" >
+            <div class="board-container" ref="boardContainer"  >
                 <vs-drag-resize
                 v-for="(comp,index) in boardOpt.comps"
                 :key="comp.id"
@@ -25,7 +25,7 @@
                 :style="{zIndex:index+1,...comp.style}"
                 v-bind="comp.style"
                 @onDragResize="updateComp"
-                @click="active = comp.id"
+                @click.stop="curCompOpt = comp"
                 >
                     <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
                     
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="vs-opt" >
-            <el-form :model="curCompOpt" label-width="120px" v-if="active != 'null'">
+            <el-form :model="curCompOpt" label-width="80px" label-position="top"  v-if="curCompOpt">
                 <component :is="curCompOpt.optComp"></component>
             </el-form>
         </div>
@@ -59,7 +59,6 @@ const router = useRouter()
 const store = useBoardStore()
 const {boardOpt,curCompOpt} = storeToRefs(store)
 const boardContainer = ref()
-const active = ref<string|number>('null')
 const updateComp = (data:vsDragResizeStyle)=>{
     console.log(data)
     let compId = data.nodeKey
@@ -77,9 +76,6 @@ onMounted(()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
-})
-watch(active,(newVal,oldVal)=>{
-    store.setCurComp(boardOpt.value.comps.find((e)=>{return e.id == active.value}) as vsContainerComp )
 })
 watch(()=>boardOpt.value.common.bg,()=>{
     if(!boardOpt.value.common.threeBg){
@@ -101,7 +97,7 @@ watch(()=>boardOpt.value.common.bg,()=>{
         box-shadow: 0 0 6px 2px #ccc;
     }
     .vs-board{
-        width: calc(100% - 460px);
+        width: calc(100% - 420px);
         height:100%;
         margin:0 10px;
         overflow: auto;
@@ -118,7 +114,7 @@ watch(()=>boardOpt.value.common.bg,()=>{
     }
     
     .vs-opt{
-        width:300px;
+        width:260px;
         padding: 0 10px;
         box-shadow: 0 0 6px 2px #ccc;
     }
