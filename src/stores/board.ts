@@ -5,6 +5,8 @@ export const useBoardStore = defineStore('boardStore',{
         return {
           boardOpt:{
             common:{
+                width:1920,
+                height:1080,
                 threeBg:false,
                 bg:''
             },

@@ -1,17 +1,46 @@
 <template>
-    <div class="vs-header">
-        <span>是否开启三维场景</span> 
-        <el-switch v-model="boardOpt.common.threeBg">
+    <el-row class="vs-header">
+        <el-col :span="5">
+            <span>是否开启三维场景</span> 
+            <el-switch v-model="boardOpt.common.threeBg">
 
-        </el-switch>
-        <span>普通背景</span>
-        <el-input v-model="boardOpt.common.bg" style="width: 50px;">
+            </el-switch>
+        </el-col>
+        <el-col :span="5">
+            <span>普通背景</span>
+            <el-input 
+            v-model="boardOpt.common.bg" 
+            style="width: 180px;"
+            >
 
-        </el-input>
-        <el-button @click="view">
-            预览
-        </el-button>
-    </div>
+            </el-input>
+        </el-col>
+        <el-col :span="5">
+            <span>分辨率</span>
+            <el-input-number 
+            v-model="boardOpt.common.width" 
+            controls-position="right"
+            style="width: 100px;"
+            >
+
+            </el-input-number>
+            <el-input-number 
+            v-model="boardOpt.common.height" 
+            controls-position="right"
+            style="width: 100px;"
+            >
+
+            </el-input-number>
+        </el-col>
+        <el-col :span="5">
+            <el-button @click="view">
+                预览
+            </el-button>
+            <el-button @click="save">
+                保存
+            </el-button>
+        </el-col>
+    </el-row>
     <div class="vs-container">
         <div class="vs-layer">
             <vs-layer-opt />
@@ -25,7 +54,7 @@
                 :style="{zIndex:index+1,...comp.style}"
                 v-bind="comp.style"
                 @onDragResize="updateComp"
-                @click.stop="curCompOpt = comp"
+                @dblclick="curCompOpt = comp"
                 >
                     <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
                     
@@ -48,9 +77,8 @@
 </template>
 
 <script lang='ts' setup>
-import { reactive, toRefs,ref,onMounted,watch,nextTick,watchEffect,computed} from 'vue'
+import {ref,onMounted,watch,nextTick} from 'vue'
 import {vsDragResizeStyle} from '@/types/dragResize.module'
-import {vsContainerData,obj,vsContainerComp} from '@/types/container.module'
 import html2canvas from 'html2canvas'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
@@ -60,7 +88,6 @@ const store = useBoardStore()
 const {boardOpt,curCompOpt} = storeToRefs(store)
 const boardContainer = ref()
 const updateComp = (data:vsDragResizeStyle)=>{
-    console.log(data)
     let compId = data.nodeKey
     delete data.nodeKey
     let comp = boardOpt.value.comps.find((comp)=>{
@@ -71,22 +98,36 @@ const updateComp = (data:vsDragResizeStyle)=>{
 const view = ()=>{
     router.push({path:'/view'})
 }
-
+const save = async ()=>{
+    let canvas = await html2canvas(boardContainer.value)
+    console.log(canvas.toDataURL("image/png"))
+    console.log(boardOpt.value)
+}
 onMounted(()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
+    nextTick(()=>{
+        boardContainer.value.style.width = boardOpt.value.common.width + 'px'
+        boardContainer.value.style.height = boardOpt.value.common.height + 'px'
+    })
 })
-watch(()=>boardOpt.value.common.bg,()=>{
+watch(()=>boardOpt.value.common,()=>{
     if(!boardOpt.value.common.threeBg){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
-})
+    boardContainer.value.style.width = boardOpt.value.common.width + 'px'
+    boardContainer.value.style.height = boardOpt.value.common.height + 'px'
+},{deep:true})
 </script>
 <style scoped lang='scss'>
 .vs-header{
-    height:60px;
+    height:50px;
+    line-height: 50px;
     width: 100%;
+    box-shadow: 0 0 6px 2px #ccc;
+    margin-bottom: 10px;
+    padding:0 20px;
 }
 .vs-container{
     display: flex;
@@ -102,10 +143,10 @@ watch(()=>boardOpt.value.common.bg,()=>{
         margin:0 10px;
         overflow: auto;
         box-shadow: 0 0 6px 2px #ccc;
+        background: #eee;
         .board-container{
             position: relative;
-            width: 1920px;
-            height:1080px;
+            background: #fff;
             background-size: 100% 100%;
             .board-three-bg{
                 position: relative;

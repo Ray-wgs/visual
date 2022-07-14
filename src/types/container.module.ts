@@ -4,6 +4,8 @@ export interface obj{
 export interface vsContainerCommon{
     threeBg:boolean,
     bg?:string,
+    width:number,
+    height:number
 }
 export interface vsContainerComp{
     tag:string,
