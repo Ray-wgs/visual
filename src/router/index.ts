@@ -18,6 +18,10 @@ const routes = [
         component:()=>import('@/views/container.vue')
     },
     {
+        path:'/chart',
+        component:()=>import('@/views/chartContainer.vue')
+    },
+    {
         path:'/view',
         component:()=>import('@/views/view.vue')
     },

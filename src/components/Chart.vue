@@ -7,10 +7,13 @@
 </template>
 
 <script lang='ts' setup name="vsChart">
-import { reactive, toRefs,ref,onMounted,PropType} from 'vue'
+import { reactive, toRefs,ref,onMounted,PropType,watch} from 'vue'
 import {v4 as uuid }from 'uuid'
 import * as echarts from "echarts";
 import chartApi from './componentsApi/chart'
+interface obj {
+    [key:string]:any
+}
     const props = defineProps({
         // 配置图表的id
         chartId:{
@@ -18,7 +21,8 @@ import chartApi from './componentsApi/chart'
         },
         // 自定义图表的option
         option:{
-            type:Object
+            type:Object as PropType<obj>,
+            default:()=>{}
         }
     })
     const {chartId,option} = toRefs(props)
@@ -62,6 +66,10 @@ import chartApi from './componentsApi/chart'
         init()
         rsOb.observe(document.querySelector(`#${domId}`) as Element)
     })
+    watch(option,()=>{
+        chartOption.value = option!.value as echarts.EChartsOption
+        init()
+    },{deep:true})
 </script>
 <style scoped lang='scss'>
 .vs-chart-container{
