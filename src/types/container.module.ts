@@ -9,7 +9,7 @@ export interface vsContainerCommon{
 }
 export interface vsContainerComp{
     tag:string,
-    id:string|number,
+    id?:string|number,
     propValue:obj,
     style:obj,
     [key:string]:any
@@ -17,4 +17,7 @@ export interface vsContainerComp{
 export interface vsContainerData{
     common:vsContainerCommon,
     comps:vsContainerComp[]
+}
+export interface vsCompOption{
+    [key:string]:vsContainerComp
 }

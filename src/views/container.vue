@@ -1,12 +1,28 @@
 <template>
-    <el-row class="vs-header">
-        <el-col :span="5">
+    <el-row class="vs-header" :align="'middle'">
+        <el-col :span="4">
+            <el-dropdown  trigger="click" type="primary" @command="addComponent">
+                <el-button class="vs-header-btn">
+                    添加组件
+                </el-button>
+                <template #dropdown>
+                <el-dropdown-menu>
+                    <el-dropdown-item command="vsText">文字组件</el-dropdown-item>
+                    <el-dropdown-item command="vsDateTime">时间组件</el-dropdown-item>
+                    <el-dropdown-item command="vsTable">表格组件</el-dropdown-item>
+                    <el-dropdown-item command="vsChart">图表组件</el-dropdown-item>
+                    <el-dropdown-item command="img">图片组件</el-dropdown-item>
+                </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </el-col>
+        <el-col :span="4">
             <span>是否开启三维场景</span> 
             <el-switch v-model="boardOpt.common.threeBg">
 
             </el-switch>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
             <span>普通背景</span>
             <el-input 
             v-model="boardOpt.common.bg" 
@@ -15,7 +31,7 @@
 
             </el-input>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
             <span>分辨率</span>
             <el-input-number 
             v-model="boardOpt.common.width" 
@@ -32,7 +48,7 @@
 
             </el-input-number>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
             <el-button @click="view">
                 预览
             </el-button>
@@ -54,7 +70,7 @@
                 :style="{zIndex:index+1,...comp.style}"
                 v-bind="comp.style"
                 @onDragResize="updateComp"
-                @dblclick="curCompOpt = comp"
+                @mousedown="curCompOpt = comp"
                 >
                     <component :is="comp.tag" v-bind="comp.propValue" :style="comp.style">
                     
@@ -81,6 +97,9 @@ import html2canvas from 'html2canvas'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router';
+import option from '@/assets/json/comp.default'
+import {v4 as uuid} from 'uuid'
+import _ from 'lodash'
 const router = useRouter()
 const store = useBoardStore()
 const {boardOpt,curCompOpt} = storeToRefs(store)
@@ -100,6 +119,13 @@ const save = async ()=>{
     let canvas = await html2canvas(boardContainer.value)
     console.log(canvas.toDataURL("image/png"))
     console.log(boardOpt.value)
+}
+const addComponent = (command:string)=>{
+    let id = uuid()
+    let compOption = _.cloneDeep(option[command])
+    compOption.id = id
+    console.log(compOption)
+    boardOpt.value.comps.push(compOption)    
 }
 onMounted(()=>{
     if(!boardOpt.value.common.threeBg){
@@ -126,6 +152,9 @@ watch(()=>boardOpt.value.common,()=>{
     box-shadow: 0 0 6px 2px #ccc;
     margin-bottom: 10px;
     padding:0 20px;
+    .vs-header-btn{
+        margin-top:10px;
+    }
 }
 .vs-container{
     display: flex;
@@ -141,10 +170,14 @@ watch(()=>boardOpt.value.common,()=>{
         margin:0 10px;
         overflow: auto;
         box-shadow: 0 0 6px 2px #ccc;
-        background: #eee;
+        @include themify($themes) {
+                background: themed("bg-color2");
+        }
         .board-container{
             position: relative;
-            background: #fff;
+            @include themify($themes) {
+                background: themed("bg-color3");
+            }
             background-size: 100% 100%;
             .board-three-bg{
                 position: relative;
