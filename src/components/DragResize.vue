@@ -143,10 +143,10 @@ import { reactive, toRefs,ref} from 'vue'
 }
 .vs-drag-resize-active{
     position: absolute;
-    border: 1px dashed themed("bg-color1");
-    cursor: move;
     @include themify($themes) {
+        border: 1px dashed themed("bg-color1");
         background: themed("bg-color1");
     }
+    cursor: move;
 }
 </style>

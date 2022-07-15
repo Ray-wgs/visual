@@ -60,6 +60,7 @@ import {toRefs,ref,watch,onMounted,computed} from 'vue'
     overflow: hidden;
     .vs-text{
         display: inline-block;
+        width: 100%;
         padding-left: 0;
     }
     .running{
