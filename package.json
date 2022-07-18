@@ -8,12 +8,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.0.1",
+    "@codemirror/theme-one-dark": "^6.0.0",
     "@types/echarts": "^4.9.15",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.0.0",
     "@types/three": "^0.141.0",
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
+    "codemirror": "^6.0.1",
     "dayjs": "^1.11.3",
     "echarts": "^5.3.3",
     "element-plus": "^2.2.8",
@@ -24,6 +27,7 @@
     "three": "^0.142.0",
     "uuid": "^8.3.2",
     "vue": "^3.2.25",
+    "vue-codemirror": "^6.0.0",
     "vue-router": "^4.0.16",
     "vuedraggable": "^4.1.0"
   },

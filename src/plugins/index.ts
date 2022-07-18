@@ -34,7 +34,7 @@ import Table from '@/components/Table.vue'
 import Text from '@/components/Text.vue'
 import Three from '@/components/Three.vue'
 import InputNumber from '@/components/InputNumber.vue'
-
+import CodeMirror from '@/components/CodeMirror.vue'
 
 import CommonOpt from '@/components/CompOpts/CommonOpt.vue'
 import DateTimeOpt from '@/components/CompOpts/DateTimeOpt.vue'
@@ -54,7 +54,7 @@ const install = (app:App<Element>)=>{
     app.component(Table.name,Table)
     app.component(Text.name,Text)
     app.component(Three.name,Three)
-
+    app.component(CodeMirror.name,CodeMirror)
     
 
     app.component(CommonOpt.name,CommonOpt)
