@@ -1,6 +1,8 @@
+import _ from 'lodash'
 interface obj {
     [key:string]:any
 }
+import { vsChartTmeplate } from '@/types/chart.module';
 /** 
 * 扁平化函数
 * @param {Object} data 要扁平化的数据
@@ -24,7 +26,7 @@ const flatten = (obj:obj)=>{
             var len = src.length;
             if (len > 0) {
                 src.forEach(function (item:any, index:string) {
-                    recurse(item, prop ? prop + '.[' + index + ']' : index);
+                    recurse(item, prop ? prop + '.' + index : index);
                 })
             } else {
                 result[prop] = [];
@@ -60,4 +62,33 @@ const unflatten = (data:obj)=>{
     }
     return result[""];
 }
-export {unflatten,flatten}
+/** 
+* series to template
+* @param {Object}  series chart能使用的option
+* @return template 配置所用的数据类型
+*/ 
+const seriesTotemplate = (series:obj[],template:vsChartTmeplate)=>{
+    let templateTabs:vsChartTmeplate = _.cloneDeep(template)
+    templateTabs.children = []
+    const setModel = (template:obj,index:number)=>{
+        template.model = template.model.replace(/series/,`series.${index}`)
+        console.log(templateCopy)
+        if(template.children){
+            Object.keys(template.children).forEach(key=>{
+                setModel(template.children[key],index)
+            })
+        }
+    }
+    let templateCopy:obj = {}
+    series.forEach((seriesItem,index)=>{
+        templateCopy = _.cloneDeep(template.children!)
+        if(template.children){
+            Object.keys(template.children).forEach(key=>{
+                setModel(templateCopy[key],index)
+            })
+            templateTabs.children!.push(templateCopy)
+        }
+    })
+    return templateTabs
+}
+export {unflatten,flatten,seriesTotemplate}
