@@ -33,6 +33,7 @@ interface obj {
     let chart:echarts.EChartsType
     // echarts 初始化
     const init = ()=>{
+        if(chart) chart.clear()
         chart = echarts.init(document.querySelector(`#${domId}`)as HTMLDivElement)
         chart.setOption(chartOption.value)
     }

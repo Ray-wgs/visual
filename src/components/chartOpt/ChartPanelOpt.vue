@@ -2,8 +2,11 @@
     <div v-if="templateOpt.children">
         <el-collapse v-model="active">
             <el-collapse-item  :title="templateOpt.name" :name="templateOpt.name">
-                <template v-for="(templateItem,index) in templateOpt.children" :key="index">
-                    <vs-chart-panel-opt :template-opt='templateItem' />
+                <template   v-if="templateOpt.tabs">
+                    <vs-chart-tab-panel-opt :template-opt='templateOpt' />
+                </template>
+                <template v-for="(templateItem,index) in templateOpt.children"  v-else>
+                    <vs-chart-panel-opt :template-opt='templateItem'  />
                 </template>
             </el-collapse-item>
         </el-collapse>
@@ -16,6 +19,7 @@
 <script lang='ts' setup name="vsChartPanelOpt">
 import { reactive, toRefs,ref,PropType} from 'vue'
 import vsChartItemOpt from './ChartItemOpt.vue'
+import vsChartTabPanelOpt from './ChartTabPanelOpt.vue'
 import {vsChartTmeplate} from '@/types/chart.module'
 const props = defineProps({
     templateOpt:{
@@ -25,6 +29,7 @@ const props = defineProps({
     }
 })
 const {templateOpt} = toRefs(props) 
+console.log(templateOpt)
 const active = ref('')
 </script>
 <style scoped lang='scss'>

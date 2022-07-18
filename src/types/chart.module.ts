@@ -30,6 +30,7 @@ export interface vsChartTemplateCommon{
 export interface vsChartTmeplate{
     name:string,
     model:string,
-    children?:obj,
+    children?:obj|obj[],
+    tabs?:boolean,
     ui?:vsChartTemplateUi<vsChartTemplateOption>
 }

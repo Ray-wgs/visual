@@ -25,14 +25,16 @@ export const useChartStore = defineStore('chartStore',{
                         "name": "类目一", 
                         "type": "line", 
                         "smooth": true, 
-                        "connectNulls": true
+                        "connectNulls": true,
+                        "id":1
                     }, 
                     {
                         "data": [110, 21, 120, 318, 165, 177, 160], 
                         "name": "类目二", 
                         "type": "line", 
                         "smooth": true, 
-                        "connectNulls": true
+                        "connectNulls": true,
+                        "id":2
                     }
                 ], 
             },

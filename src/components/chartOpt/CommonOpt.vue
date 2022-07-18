@@ -5,16 +5,46 @@
 </template>
 
 <script lang='ts' setup name="vsChartCommonOpt">
-import { reactive, toRefs,ref,PropType} from 'vue'
-import templateOpt from '@/assets/json/chartOpt/index'
+import { reactive, toRefs,ref,PropType,watchEffect} from 'vue'
+import templateOpt from '../../assets/json/chartOpt/index'
 import vsChartPanelOpt from './ChartPanelOpt.vue'
+import barSeries from '../../assets/json/chartOpt/bar.series.template'
+import lineSeries from '../../assets/json/chartOpt/line.series.template'
+import pieSeries from '../../assets/json/chartOpt/pie.series.template'
+import { useChartStore } from '../../stores/chart';
+import { storeToRefs } from 'pinia';
+import {flatten, seriesTotemplate} from '../../utils/func'
 const props = defineProps({
-    data:{
-        type:Array<string>,
-        default:()=>['title','legend','tooltip','xAxis','yAxis']
+    type:{
+        type:String,
+        default:'bar'
     }
 })
-const {data} = toRefs(props)
+const store = useChartStore()
+const {chartOpt} = storeToRefs(store)
+chartOpt.value.flattenOption = flatten(chartOpt.value.option)
+templateOpt.series = seriesTotemplate(chartOpt.value.option.series,templateOpt.series)
+const {type} = toRefs(props)
+const data =ref<string[]>([])
+
+watchEffect(()=>{
+    switch (type.value) {
+        case 'bar':
+            data.value = ['title','legend','tooltip','xAxis','yAxis','series']
+            templateOpt.series = seriesTotemplate(chartOpt.value.option.series,barSeries.series)
+            break;
+        case 'line':
+            data.value = ['title','legend','tooltip','xAxis','yAxis','series']
+            templateOpt.series = seriesTotemplate(chartOpt.value.option.series,lineSeries.series)
+            break;
+        case 'pie':
+            data.value = ['title','legend','tooltip','series']
+            templateOpt.series = seriesTotemplate(chartOpt.value.option.series,pieSeries.series)
+            break;
+        default:
+            break;
+    }
+})
 </script>
 <style scoped lang='scss'>
 </style>
