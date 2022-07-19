@@ -43,7 +43,14 @@
                 <vs-chart :option='chartOpt.option' />
             </div>
             <div class="vs-chart-data">
-                <vs-code-mirror class="vs-chart-data-option" readonly  :modelValue="JSON.stringify(chartOpt.option,null,4)"></vs-code-mirror>
+                <div class="vs-chart-data-option">
+                    <vs-code-mirror   v-model="chartOpt.jsonOption" @change="onChange">
+                    </vs-code-mirror>   
+                </div>
+                <div class="vs-chart-data-option-msg">
+                    <span>错误信息</span>
+                    <div class="error">{{msg}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -65,10 +72,20 @@ const onSelectEx = ()=>{
 const onSave = ()=>{
     console.log(chartOpt.value)
 }
+const msg = ref('')
 chartOpt.value.option = examples[chartOpt.value.type]
 chartOpt.value.flattenOption = flatten(examples[chartOpt.value.type])
+const onChange = (code:string)=>{
+    try {
+        chartOpt.value.option = JSON.parse(code)
+        chartOpt.value.flattenOption = flatten(chartOpt.value.option)
+    } catch (error:any) {
+        msg.value = error
+    }
+}
 watch(()=>chartOpt.value.flattenOption,()=>{
     chartOpt.value.option = {...chartOpt.value.option,...unflatten(chartOpt.value.flattenOption)}
+    chartOpt.value.jsonOption = JSON.stringify(chartOpt.value.option,null,4)
 },{deep:true})
 </script>
 <style scoped lang='scss'>
@@ -113,9 +130,17 @@ watch(()=>chartOpt.value.flattenOption,()=>{
             }
             .vs-chart-data-option{
                 width: calc(100% - 20px);
-                height:calc(100% - 50px);
+                height:calc(100% - 150px);
                 padding:20px 10px;
                 overflow-y: auto;
+            }
+            .vs-chart-data-option-msg{
+                height:100px;
+                overflow-y: auto;
+                background-color: #ccc;
+                .error{
+                    color:rgb(236, 13, 13);
+                }
             }
         }
     }

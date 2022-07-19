@@ -6,14 +6,14 @@
 import { reactive, toRefs,ref,} from 'vue'
  const  props=defineProps({
       array:{
-          require:true,
-          type:Array,
           default:[]
       },
   })
     const emit = defineEmits(['onChange'])
-    const data = reactive(props.array)
-    let val = ref('')
+    const {array} = toRefs(props)
+    console.log(array)
+    let val = ref(array.value.join(','))
+    console.log(val)
     const onChangeArray= ()=>{
       emit('onChange',val.value.split(','))
     }

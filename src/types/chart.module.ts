@@ -6,6 +6,7 @@ export interface vsChartOption {
     name:string|number,
     option:any,
     flattenOption:any,
+    jsonOption:string,
     data?:any
 }
 export interface vsChartTemplateOption{

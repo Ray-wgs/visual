@@ -8,6 +8,8 @@ export const useBoardStore = defineStore('boardStore',{
                 width:1920,
                 height:1080,
                 threeBg:false,
+                three:'',
+                name:'',
                 bg:''
             },
             comps:[

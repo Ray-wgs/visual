@@ -41,6 +41,7 @@ export const useChartStore = defineStore('chartStore',{
             flattenOption:{
                 
             },
+            jsonOption:'',
             data:{
                 type:'', //static  dynamic
                 data:'' //data     api    

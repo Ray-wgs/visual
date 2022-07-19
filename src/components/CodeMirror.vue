@@ -1,10 +1,10 @@
 <template>
     <codemirror 
-    :modelValue="code" 
     :style="{ height: '100%' }" 
     :extensions="extensions"
     v-bind="$attrs" 
     @change="onCodeChange"
+    ref="codeMirror"
     >
 
     </codemirror>
@@ -16,17 +16,14 @@ import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { reactive, toRefs,ref} from 'vue'
 
-const props = defineProps({
-    code:{
-        type:String,
-        default:''
-    }
-})
 const emits = defineEmits(['change'])
-const {code} = toRefs(props)
 const extensions = [javascript(),oneDark]
-const onCodeChange = ()=>{
-    emits('change',code.value)
+let timer:number|undefined
+const onCodeChange = (value:any)=>{
+    if(timer) clearTimeout(timer)
+    timer = window.setTimeout(()=>{
+        emits('change',value)
+    },200)
 }
 </script>
 <style scoped lang='scss'>

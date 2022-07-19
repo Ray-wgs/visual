@@ -44,7 +44,7 @@ import {toRefs,ref,watch,onMounted,computed} from 'vue'
     const runCycleA = computed(()=>{
         return runCycle.value + 'ms'
     })
-    let timer:number|undefined
+ 
     // 打开超链接
     const onClickOpenUrl = ()=>{
         if(isURL.value){

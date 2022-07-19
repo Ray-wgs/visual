@@ -12,7 +12,7 @@
                 :value="item.value">
             </el-option>
         </el-select>
-        <vs-input-array  style="width: 200px" v-model="chartOpt.flattenOption[templateOpt.model]" v-if="templateOpt.ui!.type === 'array'" @onChange="(val:[])=> chartOpt.flattenOption[templateOpt!.model] = val"> </vs-input-array> 
+        <vs-input-array  style="width: 200px" :array="chartOpt.flattenOption[templateOpt.model]" v-if="templateOpt.ui!.type === 'array'" @onChange="(val:[])=> chartOpt.flattenOption[templateOpt!.model] = val"> </vs-input-array> 
     </el-form-item>
 </template>
 
