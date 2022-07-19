@@ -1,1 +1,0 @@
-import{_ as t,b as o,o as a,h as s,g as c,w as n,F as r,j as _,e as l}from"./index.cb861482.js";const d={},f=_(" HOME "),i=l("code",null," there is code ",-1);function m(u,h){const e=o("el-card");return a(),s(r,null,[f,c(e,null,{default:n(()=>[i]),_:1})],64)}var x=t(d,[["render",m]]);export{x as default};
