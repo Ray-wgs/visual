@@ -4,17 +4,7 @@
             <el-switch size="small" v-model="isDark" @change="toggleDark"/>
             <el-button type="success" @click="go">三维测试版</el-button>
             <el-button type="info" @click="goCon">配置看板</el-button>
-            <el-button @click="goChart">中文</el-button>
-            
-            <el-color-picker v-model="color1" />
-             <el-select v-model="value" class="m-2" placeholder="Select" size="small">
-                <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                />
-            </el-select>
+            <el-button @click="goChart">配置图表</el-button>
             <el-slider v-model="value1" />
 
            
