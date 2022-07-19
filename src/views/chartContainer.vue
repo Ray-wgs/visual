@@ -79,6 +79,7 @@ const onChange = (code:string)=>{
     try {
         chartOpt.value.option = JSON.parse(code)
         chartOpt.value.flattenOption = flatten(chartOpt.value.option)
+        msg.value=''
     } catch (error:any) {
         msg.value = error
     }
