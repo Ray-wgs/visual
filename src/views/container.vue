@@ -12,6 +12,7 @@
                     <el-dropdown-item command="vsTable">表格组件</el-dropdown-item>
                     <el-dropdown-item command="vsChart">图表组件</el-dropdown-item>
                     <el-dropdown-item command="img">图片组件</el-dropdown-item>
+                    <el-dropdown-item command="vsColorsIcon">图标组件</el-dropdown-item>
                 </el-dropdown-menu>
                 </template>
             </el-dropdown>

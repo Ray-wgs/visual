@@ -45,6 +45,7 @@ import ImgOpt from '@/components/CompOpts/ImgOpt.vue'
 import ChartOpt from '@/components/CompOpts/ChartOpt.vue'
 import PanelOpt from '@/components/CompOpts/PanelOpt.vue'
 import PositionOpt from '@/components/CompOpts/PositionOpt.vue'
+import ColorsIconOpt from '@/components/CompOpts/IconOpt.vue'
 const install = (app:App<Element>)=>{
     app.component(Chart.name,Chart)
     app.component(ColorsIcon.name,ColorsIcon)
@@ -66,5 +67,7 @@ const install = (app:App<Element>)=>{
     app.component(ChartOpt.name,ChartOpt)
     app.component(PanelOpt.name,PanelOpt)
     app.component(PositionOpt.name,PositionOpt)
+    app.component(ColorsIconOpt.name,ColorsIconOpt)
+    
 }
 export default {install}

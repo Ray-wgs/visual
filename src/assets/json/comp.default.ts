@@ -151,6 +151,27 @@ const option = {
             left:'0px',
         },
         optComp:'vs-chart-opt'
+    },
+    vsColorsIcon:{
+        tag:'vs-colors-icon',
+        propValue:{
+            type:'svg',
+            icon:'thumbsup',
+        },
+        style:{
+            minh:20,
+            minw:20,
+            width:'40px',
+            height:'40px',
+            lineHeight:1,
+            textAlign:'left',
+            fontColor:'#000',
+            fontWeight:400,
+            fontSize:'16px',
+            top:'0px',
+            left:'0px'
+        },
+        optComp:'vs-colors-icon-opt'
     }
 } as vsCompOption
 

@@ -2,7 +2,7 @@
     <div @mousedown="onDrag" ref="vsDragResizeDom" class="vs-drag-resize" :class="curActive ? 'vs-drag-resize-active' : ''">
         <div  class="vs-resize-dom">
             <vs-colors-icon
-            iconData="icon-youxiajiao1"
+            icon="youxiajiao1"
             type="class"
             @mousedown.stop="onResize"
             >

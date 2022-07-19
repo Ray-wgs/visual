@@ -48,7 +48,29 @@ export const useBoardStore = defineStore('boardStore',{
                     },optComp:'vs-table-opt'},
                 {tag:'vs-chart',id:'5',propValue:
                 {option:{"xAxis": [{"type": "category", "position": "bottom"}], "yAxis": {"type": "value", "axisLabel": {}}, "legend": {"show": false}, "series": [{"data": [150, 12, 224, 218, 135, 147, 260], "name": "类目一", "type": "line", "smooth": true, "connectNulls": true}, {"data": [110, 21, 120, 318, 165, 177, 160], "name": "类目二", "type": "line", "smooth": true, "connectNulls": true}], "tooltip": {"formatter": "{a}:{c}", "axisPointer": {"type": "cross"}}}}
-                ,style:{width:'400px',height:'400px'}}
+                ,style:{width:'400px',height:'400px'}},
+                {
+                    tag:'vs-colors-icon',
+                    id:'6',
+                    propValue:{
+                        type:'svg',
+                        icon:'thumbsup',
+                    },
+                    style:{
+                        minh:20,
+                        minw:20,
+                        width:'40px',
+                        height:'40px',
+                        lineHeight:1,
+                        textAlign:'left',
+                        fontColor:'#000',
+                        fontWeight:400,
+                        fontSize:'16px',
+                        top:'0px',
+                        left:'0px'
+                    },
+                    optComp:'vs-colors-icon-opt'
+                }
             ]
           } as vsContainerData,
           curCompOpt:{

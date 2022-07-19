@@ -1,8 +1,8 @@
 <template>
     <svg class="iconfont" aria-hidden="true" v-if="type == 'svg'">
-            <use :xlink:href="icon"></use>
+            <use :xlink:href="'#icon-'+icon"></use>
     </svg>
-    <div v-else class="iconfont" :class="icon">
+    <div v-else class="iconfont" :class="'icon-'+icon">
 
     </div>
 </template>
@@ -10,7 +10,7 @@
 <script lang='ts' setup name="vsColorsIcon">
 import { reactive, toRefs,ref} from 'vue'
     const props = defineProps({
-        iconData:{
+        icon:{
             type:String,
         },
         type:{
@@ -21,8 +21,7 @@ import { reactive, toRefs,ref} from 'vue'
             }
         }
     })
-    const {type} = toRefs(props)
-    const icon = ref(props.iconData)
+    const {type,icon} = toRefs(props)
 </script>
 <style scoped lang='scss'>
 .iconfont {

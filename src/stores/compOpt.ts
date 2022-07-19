@@ -19,6 +19,10 @@ export const useCompOptStore = defineStore('CompOptStore',{
             openType:[
                 {value:'_blank',label:'新窗口'},
                 {value:'_self',label:'当前页'}
+            ],
+            iconType:[
+                {value:'svg',label:'svg'},
+                {value:'class',label:'class'},
             ]
           }
         };
