@@ -72,7 +72,6 @@ const seriesTotemplate = (series:obj[],template:vsChartTmeplate)=>{
     templateTabs.children = []
     const setModel = (template:obj,index:number)=>{
         template.model = template.model.replace(/series/,`series.${index}`)
-        console.log(templateCopy)
         if(template.children){
             Object.keys(template.children).forEach(key=>{
                 setModel(template.children[key],index)
