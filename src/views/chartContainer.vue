@@ -1,31 +1,42 @@
 <template>
     <div class="vs-chart-opt-container">
         <div class="vs-chart-header">
-            <el-select v-model="type" @change="onSelectEx">
-                <el-option
-                label="pie"
-                value="pie"
-                >
+            <el-form-item label="选择图表类型">
+                <el-select v-model="chartOpt.type" @change="onSelectEx">
+                    <el-option
+                    label="饼图"
+                    value="pie"
+                    >
 
-                </el-option>
-                <el-option
-                label="line"
-                value="line"
-                >
+                    </el-option>
+                    <el-option
+                    label="折线图"
+                    value="line"
+                    >
 
-                </el-option>
-                <el-option
-                label="bar"
-                value="bar"
-                >
+                    </el-option>
+                    <el-option
+                    label="柱状图"
+                    value="bar"
+                    >
 
-                </el-option>
-            </el-select>
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="图表名称">
+                <el-input v-model="chartOpt.name" ></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="onSave">
+                    保存
+                </el-button>
+            </el-form-item>
+            
         </div>
         <div class="vs-chart-warp">
             <div class="vs-chart-style">
                 <el-form :model="chartOpt.option" label-width="150px" label-position="top">
-                    <vs-chart-common-opt :type='type'/> 
+                    <vs-chart-common-opt :type='chartOpt.type'/> 
                 </el-form>
             </div>
             <div class="vs-chart-view">
@@ -47,13 +58,15 @@ import {flatten,unflatten} from '@/utils/func'
 import examples from '@/assets/json/chartOpt/example/index'
 const store = useChartStore()
 const {chartOpt} = storeToRefs(store)
-const type = ref('bar')
 const onSelectEx = ()=>{
-    chartOpt.value.option = examples[type.value]
-    chartOpt.value.flattenOption = flatten(examples[type.value])
+    chartOpt.value.option = examples[chartOpt.value.type]
+    chartOpt.value.flattenOption = flatten(examples[chartOpt.value.type])
 }
-chartOpt.value.option = examples[type.value]
-chartOpt.value.flattenOption = flatten(examples[type.value])
+const onSave = ()=>{
+    console.log(chartOpt.value)
+}
+chartOpt.value.option = examples[chartOpt.value.type]
+chartOpt.value.flattenOption = flatten(examples[chartOpt.value.type])
 watch(()=>chartOpt.value.flattenOption,()=>{
     chartOpt.value.option = {...chartOpt.value.option,...unflatten(chartOpt.value.flattenOption)}
 },{deep:true})
@@ -63,6 +76,7 @@ watch(()=>chartOpt.value.flattenOption,()=>{
     width: 100%;
     height:100vh;
     .vs-chart-header{
+        display: flex;
         width: 100%;
         height:50px;
         line-height: 50px;

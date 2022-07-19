@@ -4,7 +4,7 @@ export const useChartStore = defineStore('chartStore',{
     state: () => {
         return {
           chartOpt:{
-            type:'',// bar line pie
+            type:'bar',// bar line pie
             name:'',
             option:{
                 "xAxis": {

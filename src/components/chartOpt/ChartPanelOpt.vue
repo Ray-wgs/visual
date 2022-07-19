@@ -29,7 +29,6 @@ const props = defineProps({
     }
 })
 const {templateOpt} = toRefs(props) 
-console.log(templateOpt)
 const active = ref('')
 </script>
 <style scoped lang='scss'>
