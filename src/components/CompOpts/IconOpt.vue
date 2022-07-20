@@ -17,7 +17,21 @@
                 :options="iconData"
                 placeholder="选择图标"
                 filterable
-            />
+            >
+            <template #default="{ item }">
+                <div class="icon-option">
+                    <vs-colors-icon style="margin-right: 8px;width:25px" :icon="item.value" type="svg"></vs-colors-icon>
+                    
+                    <el-tooltip
+                        class="box-item"
+                        :content="item.label"
+                        placement="top-start"
+                    >
+                        <div class="icon-option-label">{{item.label}}</div>
+                    </el-tooltip>
+                </div>
+            </template>
+            </el-select-v2>
     </el-form-item>
 </template>
 
@@ -41,4 +55,15 @@ iconData.value = iconMetaData.glyphs.map(icon=>{
 })
 </script>
 <style scoped lang='scss'>
+.icon-option{
+    display: flex;
+    align-items: center;
+    height:40px;
+    .icon-option-label{
+        width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
 </style>
