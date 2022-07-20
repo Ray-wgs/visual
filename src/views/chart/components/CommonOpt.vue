@@ -6,14 +6,14 @@
 
 <script lang='ts' setup name="vsChartCommonOpt">
 import { reactive, toRefs,ref,PropType,watchEffect} from 'vue'
-import templateOpt from '../../assets/json/chartOpt/index'
+import templateOpt from '../config/index'
 import vsChartPanelOpt from './ChartPanelOpt.vue'
-import barSeries from '../../assets/json/chartOpt/bar.series.template'
-import lineSeries from '../../assets/json/chartOpt/line.series.template'
-import pieSeries from '../../assets/json/chartOpt/pie.series.template'
-import { useChartStore } from '../../stores/chart';
+import barSeries from '../config/bar.series.template'
+import lineSeries from '../config/line.series.template'
+import pieSeries from '../config/pie.series.template'
+import { useChartStore } from '@/stores/chart';
 import { storeToRefs } from 'pinia';
-import {flatten, seriesTotemplate} from '../../utils/func'
+import {flatten, seriesTotemplate} from '@/utils/func'
 const props = defineProps({
     type:{
         type:String,

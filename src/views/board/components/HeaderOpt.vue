@@ -57,7 +57,7 @@ import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router';
 import {v4 as uuid} from 'uuid'
-import option from '@/assets/json/comp.default'
+import option from '../config/comp.default'
 import _ from 'lodash'
 const router = useRouter()
 const store = useBoardStore()

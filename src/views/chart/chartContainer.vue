@@ -1,37 +1,7 @@
 <template>
     <div class="vs-chart-opt-container">
         <div class="vs-chart-header">
-            <el-form-item label="选择图表类型">
-                <el-select v-model="chartOpt.type" @change="onSelectEx">
-                    <el-option
-                    label="饼图"
-                    value="pie"
-                    >
-
-                    </el-option>
-                    <el-option
-                    label="折线图"
-                    value="line"
-                    >
-
-                    </el-option>
-                    <el-option
-                    label="柱状图"
-                    value="bar"
-                    >
-
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="图表名称">
-                <el-input v-model="chartOpt.name" ></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button @click="onSave">
-                    保存
-                </el-button>
-            </el-form-item>
-            
+            <vs-chart-header-opt />
         </div>
         <div class="vs-chart-warp">
             <div class="vs-chart-style">
@@ -58,20 +28,14 @@
 
 <script lang='ts' setup name="vsChartContainer">
 import { reactive, toRefs,ref,watch} from 'vue'
-import vsChartCommonOpt from '@/components/chartOpt/CommonOpt.vue'
+import vsChartCommonOpt from './components/CommonOpt.vue'
+import vsChartHeaderOpt from './components/ChartHeaderOpt.vue'
 import { useChartStore } from '@/stores/chart';
 import { storeToRefs } from 'pinia';
 import {flatten,unflatten} from '@/utils/func'
-import examples from '@/assets/json/chartOpt/example/index'
+import examples from './config/example/index'
 const store = useChartStore()
 const {chartOpt} = storeToRefs(store)
-const onSelectEx = ()=>{
-    chartOpt.value.option = examples[chartOpt.value.type]
-    chartOpt.value.flattenOption = flatten(examples[chartOpt.value.type])
-}
-const onSave = ()=>{
-    console.log(chartOpt.value)
-}
 const msg = ref('')
 chartOpt.value.option = examples[chartOpt.value.type]
 chartOpt.value.flattenOption = flatten(examples[chartOpt.value.type])
@@ -94,11 +58,14 @@ watch(()=>chartOpt.value.flattenOption,()=>{
     width: 100%;
     height:100vh;
     .vs-chart-header{
+        box-sizing: border-box;
         display: flex;
         width: 100%;
         height:50px;
+        box-shadow: 0 0 6px 2px #ccc;
         line-height: 50px;
         margin-bottom:10px;
+        padding:0 20px;
     }
     .vs-chart-warp{
         display: flex;

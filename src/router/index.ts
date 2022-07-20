@@ -15,11 +15,11 @@ const routes = <RouteRecordRaw[]>[
     },
     {
         path:'/container',
-        component:()=>import('@/views/board/container.vue')
+        component:()=>import('@/views/board/boardContainer.vue')
     },
     {
         path:'/chart',
-        component:()=>import('@/views/chartContainer.vue')
+        component:()=>import('@/views/chart/chartContainer.vue')
     },
     {
         path:'/view',
