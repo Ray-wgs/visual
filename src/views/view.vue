@@ -12,7 +12,7 @@
                 </component>
             </div>
             <vs-three
-            v-if="boardOpt.common.threeBg"
+            v-if="boardOpt.common.bgType == 'three'"
             class="board-three-bg"
             >
 
@@ -28,7 +28,7 @@ import { storeToRefs } from 'pinia'
     const {boardOpt} = storeToRefs(store)
     const boardContainer = ref()
     onMounted(()=>{
-        if(!boardOpt.value.common.threeBg){
+        if(boardOpt.value.common.bgType == 'two'){
             boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
         }
         nextTick(()=>{

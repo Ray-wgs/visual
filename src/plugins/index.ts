@@ -38,13 +38,12 @@ import CodeMirror from '@/components/CodeMirror.vue'
 
 import CommonOpt from '@/components/CompOpts/CommonOpt.vue'
 import DateTimeOpt from '@/components/CompOpts/DateTimeOpt.vue'
-import LayerOpt from '@/components/CompOpts/LayerOpt.vue'
+
 import TableOpt from '@/components/CompOpts/TableOpt.vue'
 import TextOpt from '@/components/CompOpts/TextOpt.vue'
 import ImgOpt from '@/components/CompOpts/ImgOpt.vue'
 import ChartOpt from '@/components/CompOpts/ChartOpt.vue'
-import PanelOpt from '@/components/CompOpts/PanelOpt.vue'
-import PositionOpt from '@/components/CompOpts/PositionOpt.vue'
+
 import ColorsIconOpt from '@/components/CompOpts/IconOpt.vue'
 const install = (app:App<Element>)=>{
     app.component(Chart.name,Chart)
@@ -60,13 +59,10 @@ const install = (app:App<Element>)=>{
 
     app.component(CommonOpt.name,CommonOpt)
     app.component(DateTimeOpt.name,DateTimeOpt)
-    app.component(LayerOpt.name,LayerOpt)
     app.component(TableOpt.name,TableOpt)
     app.component(TextOpt.name,TextOpt)
     app.component(ImgOpt.name,ImgOpt)
     app.component(ChartOpt.name,ChartOpt)
-    app.component(PanelOpt.name,PanelOpt)
-    app.component(PositionOpt.name,PositionOpt)
     app.component(ColorsIconOpt.name,ColorsIconOpt)
     
 }

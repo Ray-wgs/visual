@@ -1,66 +1,10 @@
 <template>
-    <el-row class="vs-header" :align="'middle'">
-        <el-col :span="4">
-            <el-dropdown  trigger="click" type="primary" @command="addComponent">
-                <el-button class="vs-header-btn">
-                    添加组件
-                </el-button>
-                <template #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item command="vsText">文字组件</el-dropdown-item>
-                    <el-dropdown-item command="vsDateTime">时间组件</el-dropdown-item>
-                    <el-dropdown-item command="vsTable">表格组件</el-dropdown-item>
-                    <el-dropdown-item command="vsChart">图表组件</el-dropdown-item>
-                    <el-dropdown-item command="img">图片组件</el-dropdown-item>
-                    <el-dropdown-item command="vsColorsIcon">图标组件</el-dropdown-item>
-                </el-dropdown-menu>
-                </template>
-            </el-dropdown>
-        </el-col>
-        <el-col :span="4">
-            <span>是否开启三维场景</span> 
-            <el-switch v-model="boardOpt.common.threeBg">
-
-            </el-switch>
-        </el-col>
-        <el-col :span="4">
-            <span>普通背景</span>
-            <el-input 
-            v-model="boardOpt.common.bg" 
-            style="width: 180px;"
-            >
-
-            </el-input>
-        </el-col>
-        <el-col :span="4">
-            <span>分辨率</span>
-            <el-input-number 
-            v-model="boardOpt.common.width" 
-            controls-position="right"
-            style="width: 100px;"
-            >
-
-            </el-input-number>
-            <el-input-number 
-            v-model="boardOpt.common.height" 
-            controls-position="right"
-            style="width: 100px;"
-            >
-
-            </el-input-number>
-        </el-col>
-        <el-col :span="4">
-            <el-button @click="view">
-                预览
-            </el-button>
-            <el-button @click="save">
-                保存
-            </el-button>
-        </el-col>
-    </el-row>
+    <div class="vs-header" >
+        <vs-board-header-opt/>
+    </div>
     <div class="vs-container">
         <div class="vs-layer">
-            <vs-layer-opt />
+            <vs-board-layer-opt />
         </div>
         <div class="vs-board">
             <div class="board-container" ref="boardContainer"  >
@@ -78,7 +22,7 @@
                     </component>
                 </vs-drag-resize>
                 <vs-three
-                v-if="boardOpt.common.threeBg"
+                v-if="boardOpt.common.bgType == 'three'"
                 class="board-three-bg"
                 >
 
@@ -86,7 +30,7 @@
             </div>
         </div>
         <div class="vs-opt" >
-            <vs-panel-opt v-if="JSON.stringify(curCompOpt) !=='{}'" />
+            <vs-board-panel-opt v-if="JSON.stringify(curCompOpt) !=='{}'" />
         </div>
     </div>
 </template>
@@ -94,14 +38,11 @@
 <script lang='ts' setup>
 import {ref,onMounted,watch,nextTick} from 'vue'
 import {vsDragResizeStyle} from '@/types/dragResize.module'
-import html2canvas from 'html2canvas'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router';
-import option from '@/assets/json/comp.default'
-import {v4 as uuid} from 'uuid'
-import _ from 'lodash'
-const router = useRouter()
+import vsBoardPanelOpt from './components/PanelOpt.vue'
+import vsBoardLayerOpt from './components/LayerOpt.vue'
+import vsBoardHeaderOpt from './components/HeaderOpt.vue'
 const store = useBoardStore()
 const {boardOpt,curCompOpt} = storeToRefs(store)
 const boardContainer = ref()
@@ -113,23 +54,8 @@ const updateComp = (data:vsDragResizeStyle)=>{
     })
     if(comp) comp.style = {...comp.style,...data}
 }
-const view = ()=>{
-    router.push({path:'/view'})
-}
-const save = async ()=>{
-    let canvas = await html2canvas(boardContainer.value)
-    console.log(canvas.toDataURL("image/png"))
-    console.log(boardOpt.value)
-}
-const addComponent = (command:string)=>{
-    let id = uuid()
-    let compOption = _.cloneDeep(option[command])
-    compOption.id = id
-    console.log(compOption)
-    boardOpt.value.comps.push(compOption)    
-}
 onMounted(()=>{
-    if(!boardOpt.value.common.threeBg){
+    if(boardOpt.value.common.bgType == 'two'){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
     nextTick(()=>{
@@ -138,7 +64,7 @@ onMounted(()=>{
     })
 })
 watch(()=>boardOpt.value.common,()=>{
-    if(!boardOpt.value.common.threeBg){
+    if(boardOpt.value.common.bgType == 'two'){
         boardContainer.value.style.backgroundImage=`url(${boardOpt.value.common.bg})`
     }
     boardContainer.value.style.width = boardOpt.value.common.width + 'px'
@@ -147,6 +73,7 @@ watch(()=>boardOpt.value.common,()=>{
 </script>
 <style scoped lang='scss'>
 .vs-header{
+    box-sizing: border-box;
     height:50px;
     line-height: 50px;
     width: 100%;

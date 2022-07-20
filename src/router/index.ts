@@ -15,7 +15,7 @@ const routes = <RouteRecordRaw[]>[
     },
     {
         path:'/container',
-        component:()=>import('@/views/container.vue')
+        component:()=>import('@/views/board/container.vue')
     },
     {
         path:'/chart',

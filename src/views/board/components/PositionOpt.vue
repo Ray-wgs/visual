@@ -35,7 +35,7 @@
     </el-form>
 </template>
 
-<script lang='ts' setup name="vsPositionOpt">
+<script lang='ts' setup name="vsBoardPositionOpt">
 import { reactive, toRefs,ref} from 'vue'
 import { useBoardStore } from '@/stores/board';
 import {storeToRefs} from 'pinia'

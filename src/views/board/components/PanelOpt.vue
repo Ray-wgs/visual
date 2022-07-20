@@ -12,10 +12,11 @@
     </el-tabs>
 </template>
 
-<script lang='ts' setup name="vsPanelOpt">
+<script lang='ts' setup name="vsBoardPanelOpt">
 import { reactive, toRefs,ref} from 'vue'
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
+import vsPositionOpt from './PositionOpt.vue'
 const active = ref('Style')
 const store = useBoardStore()
 const {curCompOpt} = storeToRefs(store)

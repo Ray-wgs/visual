@@ -9,7 +9,7 @@
     </draggable>
 </template>
 
-<script lang='ts' setup name="vsLayerOpt">
+<script lang='ts' setup name="vsBoardLayerOpt">
 import { reactive, toRefs,ref} from 'vue'
 import { useBoardStore } from '@/stores/board';
 import { storeToRefs } from 'pinia';

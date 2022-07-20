@@ -2,7 +2,7 @@ export interface obj{
     [key:string]:any
   }
 export interface vsContainerCommon{
-    threeBg:boolean,
+    bgType:'three'|'two',
     bg?:string,
     width:number,
     height:number

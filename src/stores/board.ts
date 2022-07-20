@@ -7,8 +7,7 @@ export const useBoardStore = defineStore('boardStore',{
             common:{
                 width:1920,
                 height:1080,
-                threeBg:false,
-                three:'',
+                bgType:'two',
                 name:'',
                 bg:''
             },
