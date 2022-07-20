@@ -7,7 +7,7 @@ const option = {
             "id": {
                 "name": "ID",
                 "show": false,
-                "model": "id",
+                "model": "series.id",
                 "ui": {
                     "type": "text",
                     "value": "",

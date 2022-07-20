@@ -6,7 +6,7 @@ const option = {
         "children": {
             "id": {
                 "name": "ID",
-                "model": "id",
+                "model": "series.id",
                 "show": false,
                 "ui": {
                     "type": "text",
