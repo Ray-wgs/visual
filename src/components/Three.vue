@@ -83,7 +83,6 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
         let  material = new THREE.MeshLambertMaterial({
               color:  'red',
         });
-        console.log(geometry,material)
         let mesh =new THREE.Mesh(geometry,material)
         mesh.name = 'test'
         mesh.position.set(0,10,0)
@@ -110,7 +109,7 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
         threeFuncs.event.setEvent(obj)
     }
     let timer:number
-    // 新增chart大小随动方法
+    // 新增三维画布大小随动方法
     const rsOb = new ResizeObserver((e)=>{
         if(timer) clearTimeout(timer)
         timer = window.setTimeout(() => {
@@ -118,7 +117,7 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
                 init()
                 renderer.render(scene,camera)
             } catch (error) {
-                console.warn('chart重新设置大小失败')
+                console.warn('three画布重新设置大小失败')
             }
         }, 50);
     })

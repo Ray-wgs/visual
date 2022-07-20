@@ -11,7 +11,7 @@ const routes = <RouteRecordRaw[]>[
         component:()=>import('@/views/home.vue')
     },{
         path:'/three',
-        component:()=>import('@/views/three.vue')
+        component:()=>import('@/views/three/threeContainer.vue')
     },
     {
         path:'/container',
