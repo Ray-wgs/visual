@@ -78,6 +78,11 @@ export const useThreeStore = defineStore('threeStore',{
                         value:false,
                         label:'坐标网格辅助'
                     },
+                    {
+                        name:'CameraHelper',
+                        value:false,
+                        label:'相机辅助'
+                    },
                 ]
             },
             controls:{

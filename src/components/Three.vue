@@ -141,6 +141,10 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
                         help = new THREE.GridHelper(1000,10)
                         help.name = helper.name
                         break;
+                    case 'CameraHelper':
+                        help = new THREE.CameraHelper(camera)
+                        help.name = helper.name
+                        break;
                 }
                 scene.add(help)
                 help = ''

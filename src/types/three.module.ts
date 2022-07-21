@@ -66,7 +66,7 @@ export interface vsThreeCreateModelOption{
     mOpts:vsThreeModelOption
 }
 export interface vsThreeHelper{
-    name:'AxesHelper'|'GridHelper',
+    name:'AxesHelper'|'GridHelper'|'CameraHelper',
     value:boolean,
     label:string
 }
