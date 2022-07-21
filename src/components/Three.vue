@@ -6,11 +6,38 @@
 
 <script lang='ts' setup name="vsThree">
 import * as THREE from "three";
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
-import { reactive, toRefs,ref,onMounted} from 'vue'
+import { reactive, toRefs,ref,onMounted,watch,PropType,watchEffect} from 'vue'
 import threeFuncs from '@/utils/threeToolFuncs/index'
+import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOption,vsThreeEventOps,vsThreeHelper} from '@/types/three.module'
+    const props = defineProps({
+        modelOpts:{
+            type:Array as PropType<vsThreeCreateModelOption[]>,
+            require:true
+        },
+        lightOpts:{
+            type:Array as PropType<vsThreeCreateLightOption[]>,
+            require:true,
+        },
+        eventOpts:{
+            type:Array as PropType<vsThreeEventOps[]>,
+            require:true
+        },
+        cameraOpt:{
+            type:Object as PropType<vsThreeCreateCameraOption>,
+            require:true
+        },
+        helperOpts:{
+            type:Array as PropType<vsThreeHelper[]>,
+            require:true
+        },
+        controls:{
+            type:Object,
+        }
+    })
+    const {modelOpts,lightOpts,eventOpts,cameraOpt,helperOpts,controls} = toRefs(props)
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
     const renderer = new THREE.WebGLRenderer({ 
@@ -20,65 +47,64 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
                     })
     let camera:THREE.Camera
     let orbitControls:OrbitControls
+    let transformControls:TransformControls
+    let dragControls:DragControls
     const init = ()=>{
         renderer.setSize(vsThreeContainer.value.clientWidth,vsThreeContainer.value.clientHeight)
         vsThreeContainer.value.appendChild(renderer.domElement)
     }
-    const initCamera = ()=>{
-        let obj = {
-            cType:'PerspectiveCamera',
-            cLookAt:{x:0,y:0,z:0},
-            cPosition:{x:500,y:500,z:500},
-            cOpts:{
-                fov:50,
-                aspect:1,
-                near:0.1,
-                far:2000
-            }
-        }
-        camera = threeFuncs.camera.creatCamera(obj)
+    const initCamera = (cameraOpt:vsThreeCreateCameraOption)=>{
+        camera = threeFuncs.camera.creatCamera(cameraOpt)
         scene.add(camera)
         renderer.render(scene,camera)
     }
     const initControls = ()=>{
         orbitControls = new OrbitControls(camera, renderer.domElement);
         orbitControls.addEventListener("change", () => {
-            console.log('os')
             renderer.render(scene, camera);
         }); //监听鼠标、键盘事件
     }
-    const initLight = ()=>{
-        let amObj ={
-            lType:'AmbientLight',
-            lOpts:{
-                color:'#ccc'
-            },
-            lPosition:{
-                x:500,
-                y:500,
-                z:500
-            }
-        }
-        let poObj ={
-            lType:'PointLight',
-            lOpts:{
-                color:'red'
-            },
-            lPosition:{
-                x:500,
-                y:500,
-                z:500
-            }
-        }
-        let amLight = threeFuncs.light.craeteLight(amObj)
-        amLight.position.set(600,600,600)
-        scene.add(amLight)
-        let pointLight = threeFuncs.light.craeteLight(poObj)
-        pointLight.position.set(600,600,600)
-        scene.add(pointLight)
+    const initDrag = ()=>{
+        transformControls = new TransformControls(camera,renderer.domElement);
+        scene.add(transformControls);
+        let allowMesh = scene.children.filter((child)=>{
+            // @ts-ignore
+            return child.isMesh || child.isGroup
+        })
+        dragControls = new DragControls(allowMesh, camera, renderer.domElement);
+        dragControls.transformGroup = true
+        dragControls.addEventListener('hoveron', function( event ){
+                console.log(event)
+                dragControls.activate();
+                transformControls.attach(event.object);
+                transformControls.setSize(0.4);
+                orbitControls.enabled = false
+        });
+        // 开始拖拽
+        dragControls.addEventListener('dragstart', function (event) {
+            console.log('start',event)
+        });
+        dragControls.addEventListener('hoveroff',function(event){
+            orbitControls.enabled = true
+        })
+        // 拖拽结束
+        dragControls.addEventListener('dragend', function (event) {
+            console.log('end',event)
+            transformControls.detach()
+            // controls.enabled = true
+            renderer.render(scene, camera);
+        });
+    }   
+    const initLight = (lightList:vsThreeCreateLightOption[])=>{
+        lightList.forEach(light=>{
+            scene.add(threeFuncs.light.craeteLight(light))
+        })
         renderer.render(scene,camera)
     }
-    const initModel = ()=>{
+    const initModel = (modelLists:vsThreeCreateModelOption[])=>{
+        modelLists.forEach(model=>{
+
+        })
         let geometry = new THREE.BoxGeometry(200,200,200)
         let  material = new THREE.MeshLambertMaterial({
               color:  'red',
@@ -86,27 +112,43 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
         let mesh =new THREE.Mesh(geometry,material)
         mesh.name = 'test'
         mesh.position.set(0,10,0)
+        console.log(mesh)
         scene.add(mesh)
         renderer.render(scene,camera)
     }
-    const initEvent = ()=>{
-        let fn = (model:THREE.Intersection<THREE.Object3D<THREE.Event>>[],ev:MouseEvent)=>{
-            console.log(model,ev)
-            let ro = ()=>{
-                window.requestAnimationFrame(ro)
-                model[0].object.rotateY(model[0].object.rotation.y+0.01)
-                renderer.render(scene,camera)
-            } 
-            ro()          
-        }
-        let obj = {
-            container:vsThreeContainer.value,
-            eventType:'click',
-            camera,
-            scene,
-            callback:fn
-        }
-        threeFuncs.event.setEvent(obj)
+    const initEvent = (evnets:any[])=>{
+        evnets.forEach(ev=>{
+            let obj ={
+                container:vsThreeContainer.value,
+                camera,
+                scene,
+                ...ev
+            } as vsThreeEventOps
+            threeFuncs.event.setEvent(obj)
+        })
+        
+    }
+    const initHelpers = (helpers:vsThreeHelper[])=>{
+        helpers.forEach(helper=>{
+            if(helper.value){
+                let help 
+                switch(helper.name){
+                    case 'AxesHelper':
+                        help = new THREE.AxesHelper(1000)
+                        help.name = helper.name
+                        break;
+                    case 'GridHelper':
+                        help = new THREE.GridHelper(1000,10)
+                        help.name = helper.name
+                        break;
+                }
+                scene.add(help)
+                help = ''
+            }else{
+                threeFuncs.model.removeModelByName(helper.name,scene)
+            }
+           renderer.render(scene,camera)
+        })
     }
     let timer:number
     // 新增三维画布大小随动方法
@@ -121,15 +163,63 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
             }
         }, 50);
     })
+    // watchEffect(()=>{
+    //     initModel(modelOpts!.value!)
+    // })
+    // watchEffect(()=>{
+    //     initLight(lightOpts!.value!)
+    // })
+    // watchEffect(()=>{
+    //     initEvent(eventOpts!.value!)
+    // })
+    // watchEffect(()=>{
+    //     initCamera(cameraOpt!.value!)
+    // })
+    // watchEffect(()=>{
+    //     initHelpers(helperOpts!.value!)
+    // })
+    watch(()=>modelOpts,()=>{
+        initModel(modelOpts!.value!)
+    },{
+        deep:true
+    })
+    watch(()=>lightOpts,()=>{
+        initLight(lightOpts!.value!)
+    },{
+        deep:true
+    })
+    watch(()=>eventOpts,()=>{
+        initEvent(eventOpts!.value!)
+    },{
+        deep:true
+    })
+    watch(()=>cameraOpt,()=>{
+        initCamera(cameraOpt!.value!)
+    },{
+        deep:true
+    })
+    watch(()=>helperOpts,()=>{
+        initHelpers(helperOpts!.value!)
+    },{
+        deep:true
+    })
+    watch(()=>controls,()=>{
+        if(controls!.value!.drag){
+            initDrag()
+        }else{
+            if(transformControls) transformControls.dispose()
+        }
+    },{deep:true})
     onMounted(()=>{
         init()
-        initCamera()
+        initCamera(cameraOpt!.value!)
+        initEvent(eventOpts!.value!)
+        initLight(lightOpts!.value!)
+        initModel(modelOpts!.value!)
+        initHelpers(helperOpts!.value!)
         initControls()
-        initLight()
-        initModel()
-        initEvent()
+        if(controls!.value!.drag){initDrag()}
         rsOb.observe(vsThreeContainer.value as Element)
-        console.log(scene)
     })
 </script>
 <style scoped lang='scss'>

@@ -1,16 +1,49 @@
 import * as THREE from 'three'
-
+import {vsThreeCreateModelOption} from '@/types/three.module'
 const model = {
     /** 
     * 通过配置项生成基础模型
     * @param {String} mType  要生成的基础模型类别，目前包含 OrthographicCamera,PerspectiveCamera
     * @param {vsThreePoint} mPosition 模型的初始位置
     * @param mName  模型的名称
-    * @param mOpts 模型的配置项，如可观测的位置的远近、视角的大小等
+    * @param mOpts 模型的配置项，一般为模型的大小
     * @return model 通过配置项创建的简单模型
     */ 
-    createBasicModel : ()=>{
-
+    createBasicModel : async({mName,mType,mMaterial,mPosition,mOpts}:vsThreeCreateModelOption)=>{
+        let geometry
+        const {width,height,depth,radius,radiusTop,radiusBottom} = mOpts
+        switch (mType) {
+            // 长方体 长宽高
+            case 'box':
+                geometry = new THREE.BoxGeometry(width,height,depth)
+                break;
+            // 球体  半径
+            case 'sphere':
+                geometry = new THREE.SphereGeometry(radius)
+                break;
+            // 圆柱体 顶面半径、地面半径、高度
+            case 'cylinder':
+                geometry = new THREE.CylinderGeometry(radiusTop,radiusBottom,height)
+                break;
+            default:
+                break;
+        }
+        let material
+        if(mMaterial.type = 'color'){
+            material = new THREE.MeshLambertMaterial({
+                color: mMaterial.material || 0x0000ff,
+            });
+        }else{
+            let textureLoader = new THREE.TextureLoader()
+            let texture = await textureLoader.loadAsync(mMaterial.material as string)
+            material = new THREE.MeshLambertMaterial({
+                map: texture,
+            });
+        }
+        const mesh = new THREE.Mesh(geometry, material)
+        mesh.name = mName
+        mesh.position.set(mPosition.x,mPosition.y,mPosition.z)
+        return mesh
     },
     /** 
     * 移除模型(Removes object as child of this parentobject)
@@ -29,7 +62,7 @@ const model = {
   * @param  names 多个模型的名称数组或者单个模型的名字
   * @param  parent 要删除模型的父级  
   */ 
-   removeModelByName : (names:string[]|string,parent:THREE.Object3D<Event>)=>{
+   removeModelByName : (names:string[]|string,parent:THREE.Object3D<Event>|THREE.Scene)=>{
       if(names instanceof Array){
           names.map(name=>{
                 if(parent.getObjectByName(name)){
