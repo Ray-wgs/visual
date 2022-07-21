@@ -146,13 +146,16 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
                         help.name = helper.name
                         break;
                 }
-                scene.add(help)
-                help = ''
+                if(!threeFuncs.model.getModelDetail(scene).map(e=>{return e.name}).includes(help.name)){
+                    scene.add(help)
+                    help = ''
+                }
             }else{
                 threeFuncs.model.removeModelByName(helper.name,scene)
             }
-           renderer.render(scene,camera)
         })
+        console.log(helpers,scene)
+        renderer.render(scene,camera)
     }
     let timer:number
     // 新增三维画布大小随动方法
