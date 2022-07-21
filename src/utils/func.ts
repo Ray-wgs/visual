@@ -90,4 +90,87 @@ const seriesTotemplate = (series:obj[],template:vsChartTmeplate)=>{
     })
     return templateTabs
 }
-export {unflatten,flatten,seriesTotemplate}
+/** 
+* 比对两个数组的差异 不包含函数 
+* @param  oldArr 原数组
+* @param  newArr 新数组
+* e.g oldArr: [{a:1},{b:2},{c:3}],newArr:[{a:1},{b:3}] => {add:[{b: 3}],change:[],delete:[{b: 2},{c: 3}]}
+*/ 
+const compareArray = (oldArr:any[],newArr:any[])=>{
+    let patchs = {
+        delete:<any[]>[],
+        add:<any[]>[],
+        change:<any[]>[]
+    }
+    let max = Math.max(oldArr.length,newArr.length)
+    for (let index = 0; index < max; index++) {
+        deep(oldArr[index],newArr[index],index)
+    }
+    function deep(oldNode:any,newNode:any,index:number){
+        // 两个节点 类型一样 继续判断
+        if(typeof oldNode == typeof newNode){
+            // array or obj
+            if(oldNode instanceof Array){
+                compareArray(oldNode,newNode)
+            }else{
+                if(typeof oldNode == 'object'){
+                    if(oldNode.hasOwnProperty('key')&&newNode.hasOwnProperty('key')){
+                        if(oldNode['key'] == newNode['key']){
+                            if(!compareObj(oldNode,newNode)){
+                                patchs.change.push(newNode)
+                            }
+                        }else{
+                            patchs.delete.push(oldNode)
+                            patchs.add.push(newNode)
+                        }
+                    }else{
+                        if(!compareObj(oldNode,newNode)){
+                            patchs.delete.push(oldNode)
+                            patchs.add.push(newNode)
+                        }
+                    }
+                    
+                }else{
+                    if(oldNode !== newNode){
+                        patchs.delete.push(oldNode)
+                        patchs.add.push(newNode)
+                    }
+                }
+            }
+        }else{
+            // 两个节点 无旧节点 有新节点 判断为新增 有旧节点则判断为删除
+          if(newNode) patchs.add.push(newNode)
+          else patchs.delete.push(oldNode)
+        }
+    }
+    return patchs
+}
+/** 
+* 比较两个对象是否相等 不包含函数
+* @param  oldObj 原对象
+* @param  newObj 新对象
+* e.g oldObj: {a:1},newObj:{a:1} => true,oldObj: {a:2},newObj:{a:1} => false,
+*/ 
+const compareObj = (oldObj:obj,newObj:obj):boolean=>{
+    if(oldObj == newObj){
+        return true
+    }else{
+        let oldKeys = Object.getOwnPropertyNames(oldObj)
+        let newKeys = Object.getOwnPropertyNames(newObj)
+        if(oldKeys.length != newKeys.length){
+            return false
+        }else{
+            for (const key in newObj) {
+                if (Object.prototype.hasOwnProperty.call(newObj, key)) {
+                    if(typeof newObj[key] == 'object'){
+                       return compareObj(oldObj[key],newObj[key])
+                    }else if(newObj[key] != oldObj[key] ){
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+}
+export {unflatten,flatten,seriesTotemplate,compareArray,compareObj}

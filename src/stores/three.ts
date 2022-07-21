@@ -12,7 +12,7 @@ export const useThreeStore = defineStore('threeStore',{
                         mType:'box',
                         mMaterial:{
                             type:'color',
-                            material:'red'
+                            material:'blue'
                         },
                         mPosition:{
                             x:0,

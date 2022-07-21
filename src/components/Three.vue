@@ -11,6 +11,7 @@ import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
 import { reactive, toRefs,ref,onMounted,watch,PropType,watchEffect} from 'vue'
 import threeFuncs from '@/utils/threeToolFuncs/index'
+import {compareArray} from '@/utils/func'
 import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOption,vsThreeEventOps,vsThreeHelper,vsThreeEventOpsPart} from '@/types/three.module'
     const props = defineProps({
         modelOpts:{
@@ -91,7 +92,6 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         dragControls.addEventListener('dragend', function (event) {
             console.log('end',event)
             transformControls.detach()
-            // controls.enabled = true
             renderer.render(scene, camera);
         });
     }   
@@ -102,18 +102,10 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         renderer.render(scene,camera)
     }
     const initModel = (modelLists:vsThreeCreateModelOption[])=>{
-        modelLists.forEach(model=>{
-
+        modelLists.forEach(async(model)=>{
+            let mesh = await threeFuncs.model.createBasicModel(model)
+            scene.add(mesh)
         })
-        let geometry = new THREE.BoxGeometry(200,200,200)
-        let  material = new THREE.MeshLambertMaterial({
-              color:  'red',
-        });
-        let mesh =new THREE.Mesh(geometry,material)
-        mesh.name = 'test'
-        mesh.position.set(0,10,0)
-        console.log(mesh)
-        scene.add(mesh)
         renderer.render(scene,camera)
     }
     const initEvent = (evnets:vsThreeEventOpsPart[])=>{
@@ -170,37 +162,34 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
             }
         }, 50);
     })
-    // watchEffect(()=>{
-    //     initModel(modelOpts!.value!)
-    // })
-    // watchEffect(()=>{
-    //     initLight(lightOpts!.value!)
-    // })
-    // watchEffect(()=>{
-    //     initEvent(eventOpts!.value!)
-    // })
-    // watchEffect(()=>{
-    //     initCamera(cameraOpt!.value!)
-    // })
-    // watchEffect(()=>{
-    //     initHelpers(helperOpts!.value!)
-    // })
-    watch(()=>modelOpts,()=>{
-        initModel(modelOpts!.value!)
+    watch(()=>modelOpts,(oldV,newV)=>{
+        // @ts-ignore
+        let patchs = compareArray(oldV,newV)
+        patchs.delete.forEach(item=>{
+            threeFuncs.model.removeModelByName(item.name,scene)
+        })
+        initModel([...patchs.add,...patchs.change])
     },{
         deep:true
     })
     watch(()=>lightOpts,()=>{
-        initLight(lightOpts!.value!)
+        // @ts-ignore
+        let patchs = compareArray(oldV,newV)
+        patchs.delete.forEach(item=>{
+            threeFuncs.model.removeModelByName(item.lname,scene)
+        })
+        initLight([...patchs.add,...patchs.change])
     },{
         deep:true
     })
     watch(()=>eventOpts,()=>{
+        // @ts-ignore
         initEvent(eventOpts!.value!)
     },{
         deep:true
     })
     watch(()=>cameraOpt,()=>{
+        threeFuncs.model.removeModelByName(cameraOpt!.value!.cName!,scene)
         initCamera(cameraOpt!.value!)
     },{
         deep:true
@@ -212,9 +201,17 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
     })
     watch(()=>controls,()=>{
         if(controls!.value!.drag){
-            initDrag()
+            if(dragControls){
+                dragControls.enabled = true 
+                transformControls.enabled = true
+            }
+            else initDrag()
         }else{
-            if(transformControls) transformControls.dispose()
+            if(dragControls){
+                dragControls.enabled = false
+                transformControls.detach()
+                transformControls.enabled = false
+            }
         }
     },{deep:true})
     onMounted(()=>{
