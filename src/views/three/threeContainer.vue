@@ -4,7 +4,7 @@
             <vs-three-header-opt />
         </div>
         <div class="vs-three-container">
-            
+            <vs-three-container-opt />
         </div>
     </div>
 </template>
@@ -12,6 +12,11 @@
 <script lang='ts' setup name="vsThreeContainer">
 import vsThreeHeaderOpt from './components/ThreeHeaderOpt.vue'
 import { reactive, toRefs,ref} from 'vue'
+import { useThreeStore } from '@/stores/three';
+import { storeToRefs } from 'pinia';
+import vsThreeContainerOpt from './components/ThreeContainerOpt.vue';
+const store = useThreeStore()
+const {threeOpt} = storeToRefs(store)
 
 </script>
 <style scoped lang='scss'>
@@ -27,6 +32,10 @@ import { reactive, toRefs,ref} from 'vue'
         line-height: 50px;
         margin-bottom:10px;
         padding:0 20px;
+    }
+    .vs-three-container{
+        width: 100%;
+        height: calc(100% - 50px);
     }
 }
 
