@@ -8,18 +8,18 @@ export const useThreeStore = defineStore('threeStore',{
             option:{
                 models:[
                     {
-                        mName:'test',
-                        mType:'box',
-                        mMaterial:{
+                        name:'test',
+                        type:'box',
+                        material:{
                             type:'color',
                             material:'blue'
                         },
-                        mPosition:{
+                        position:{
                             x:0,
                             y:0,
                             z:0
                         },
-                        mOpts:{
+                        opts:{
                             width:200,
                             height:200,
                             depth:200
@@ -28,14 +28,14 @@ export const useThreeStore = defineStore('threeStore',{
                 ],
                 lights:[
                     {
-                        lName:'testLight',
-                        lType:'AmbientLight',
-                        lPosition:{
+                        name:'testLight',
+                        type:'AmbientLight',
+                        position:{
                             x:400,
                             y:400,
                             z:400,
                         },
-                        lOpts:{
+                        opts:{
                             color:'#fff',
                         }
                     }
@@ -51,19 +51,19 @@ export const useThreeStore = defineStore('threeStore',{
                     }
                 ],
                 camera:{
-                    cName:'testCamera',
-                    cType:'PerspectiveCamera',
-                    cPosition:{
+                    name:'testCamera',
+                    type:'PerspectiveCamera',
+                    position:{
                         x:800,
                         y:800,
                         z:800,
                     },
-                    cLookAt:{
+                    lookAt:{
                         x:0,
                         y:0,
                         z:0,
                     },
-                    cOpts:{
+                    opts:{
 
                     }
                 },

@@ -14,7 +14,7 @@ import threeFuncs from '@/utils/threeToolFuncs/index'
 import {compareArray} from '@/utils/func'
 import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOption,vsThreeEventOps,vsThreeHelper,vsThreeEventOpsPart} from '@/types/three.module'
     const props = defineProps({
-        modelOpts:{
+        modeopts:{
             type:Array as PropType<vsThreeCreateModelOption[]>,
             require:true
         },
@@ -38,7 +38,8 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
             type:Object,
         }
     })
-    const {modelOpts,lightOpts,eventOpts,cameraOpt,helperOpts,controls} = toRefs(props)
+    const emits = defineEmits(['dragModelEnd'])
+    const {modeopts,lightOpts,eventOpts,cameraOpt,helperOpts,controls} = toRefs(props)
     const vsThreeContainer = ref() 
     const scene = new THREE.Scene()
     const renderer = new THREE.WebGLRenderer({ 
@@ -75,7 +76,6 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         dragControls = new DragControls(allowMesh, camera, renderer.domElement);
         dragControls.transformGroup = true
         dragControls.addEventListener('hoveron', function( event ){
-                console.log(event)
                 dragControls.activate();
                 transformControls.attach(event.object);
                 transformControls.setSize(0.4);
@@ -90,7 +90,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         })
         // 拖拽结束
         dragControls.addEventListener('dragend', function (event) {
-            console.log('end',event)
+            emits('dragModelEnd',event)
             transformControls.detach()
             renderer.render(scene, camera);
         });
@@ -162,7 +162,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
             }
         }, 50);
     })
-    watch(()=>modelOpts,(oldV,newV)=>{
+    watch(()=>modeopts,(oldV,newV)=>{
         // @ts-ignore
         let patchs = compareArray(oldV,newV)
         patchs.delete.forEach(item=>{
@@ -176,7 +176,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         // @ts-ignore
         let patchs = compareArray(oldV,newV)
         patchs.delete.forEach(item=>{
-            threeFuncs.model.removeModelByName(item.lname,scene)
+            threeFuncs.model.removeModelByName(item.name,scene)
         })
         initLight([...patchs.add,...patchs.change])
     },{
@@ -189,7 +189,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         deep:true
     })
     watch(()=>cameraOpt,()=>{
-        threeFuncs.model.removeModelByName(cameraOpt!.value!.cName!,scene)
+        threeFuncs.model.removeModelByName(cameraOpt!.value!.name!,scene)
         initCamera(cameraOpt!.value!)
     },{
         deep:true
@@ -219,7 +219,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         initCamera(cameraOpt!.value!)
         initEvent(eventOpts!.value!)
         initLight(lightOpts!.value!)
-        initModel(modelOpts!.value!)
+        initModel(modeopts!.value!)
         initHelpers(helperOpts!.value!)
         initControls()
         if(controls!.value!.drag){initDrag()}

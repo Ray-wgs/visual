@@ -3,16 +3,16 @@ import {vsThreeCreateModelOption} from '@/types/three.module'
 const model = {
     /** 
     * 通过配置项生成基础模型
-    * @param {String} mType  要生成的基础模型类别，目前包含 OrthographicCamera,PerspectiveCamera
-    * @param {vsThreePoint} mPosition 模型的初始位置
-    * @param mName  模型的名称
-    * @param mOpts 模型的配置项，一般为模型的大小
+    * @param {String} type  要生成的基础模型类别，目前包含 OrthographicCamera,PerspectiveCamera
+    * @param {vsThreePoint} position 模型的初始位置
+    * @param name  模型的名称
+    * @param opts 模型的配置项，一般为模型的大小
     * @return model 通过配置项创建的简单模型
     */ 
-    createBasicModel : async({mName,mType,mMaterial,mPosition,mOpts}:vsThreeCreateModelOption)=>{
+    createBasicModel : async({name,type,material,position,opts}:vsThreeCreateModelOption)=>{
         let geometry
-        const {width,height,depth,radius,radiusTop,radiusBottom} = mOpts
-        switch (mType) {
+        const {width,height,depth,radius,radiusTop,radiusBottom} = opts
+        switch (type) {
             // 长方体 长宽高
             case 'box':
                 geometry = new THREE.BoxGeometry(width,height,depth)
@@ -28,21 +28,21 @@ const model = {
             default:
                 break;
         }
-        let material
-        if(mMaterial.type = 'color'){
-            material = new THREE.MeshLambertMaterial({
-                color: mMaterial.material || 0x0000ff,
+        let ml
+        if(material.type = 'color'){
+            ml = new THREE.MeshLambertMaterial({
+                color: material.material || 0x0000ff,
             });
         }else{
             let textureLoader = new THREE.TextureLoader()
-            let texture = await textureLoader.loadAsync(mMaterial.material as string)
-            material = new THREE.MeshLambertMaterial({
+            let texture = await textureLoader.loadAsync(material.material as string)
+            ml = new THREE.MeshLambertMaterial({
                 map: texture,
             });
         }
-        const mesh = new THREE.Mesh(geometry, material)
-        mesh.name = mName
-        mesh.position.set(mPosition.x,mPosition.y,mPosition.z)
+        const mesh = new THREE.Mesh(geometry, ml)
+        mesh.name = name
+        mesh.position.set(position.x,position.y,position.z)
         return mesh
     },
     /** 

@@ -32,11 +32,11 @@ export interface vsThreeCameraOption {
     far?:number,
 }
 export interface vsThreeCreateCameraOption{
-    cType:'OrthographicCamera'|'PerspectiveCamera',
-    cPosition:vsThreePoint,
-    cLookAt:vsThreePoint,
-    cOpts:vsThreeCameraOption,
-    cName?:string,
+    type:'OrthographicCamera'|'PerspectiveCamera',
+    position:vsThreePoint,
+    lookAt:vsThreePoint,
+    opts:vsThreeCameraOption,
+    name?:string,
 }
 export interface vsThreeLightOption {
     color?:THREE.ColorRepresentation,
@@ -49,10 +49,10 @@ export interface vsThreeLightOption {
     groundColor?:THREE.ColorRepresentation,
 }
 export interface vsThreeCreateLightOption{
-    lType:'AmbientLight'|'SpotLight'|'PointLight'|'HemisphereLight',
-    lPosition:vsThreePoint,
-    lOpts:vsThreeLightOption,
-    lName?:string,
+    type:'AmbientLight'|'SpotLight'|'PointLight'|'HemisphereLight',
+    position:vsThreePoint,
+    opts:vsThreeLightOption,
+    name?:string,
 }
 export interface vsThreeModelOption{
     width?:number,
@@ -63,14 +63,14 @@ export interface vsThreeModelOption{
     radiusBottom?:number,
 }
 export interface vsThreeCreateModelOption{
-    mName:string,
-    mType:string,
-    mMaterial:{
+    name:string,
+    type:string,
+    material:{
         type:'color'|'img',
         material:three.ColorRepresentation|string
     },
-    mPosition:vsThreePoint,
-    mOpts:vsThreeModelOption
+    position:vsThreePoint,
+    opts:vsThreeModelOption
 }
 export interface vsThreeHelper{
     name:'AxesHelper'|'GridHelper'|'CameraHelper',
