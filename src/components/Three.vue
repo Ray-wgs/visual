@@ -11,7 +11,7 @@ import {DragControls} from 'three/examples/jsm/controls/DragControls.js';
 import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
 import { reactive, toRefs,ref,onMounted,watch,PropType,watchEffect} from 'vue'
 import threeFuncs from '@/utils/threeToolFuncs/index'
-import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOption,vsThreeEventOps,vsThreeHelper} from '@/types/three.module'
+import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOption,vsThreeEventOps,vsThreeHelper,vsThreeEventOpsPart} from '@/types/three.module'
     const props = defineProps({
         modelOpts:{
             type:Array as PropType<vsThreeCreateModelOption[]>,
@@ -22,7 +22,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
             require:true,
         },
         eventOpts:{
-            type:Array as PropType<vsThreeEventOps[]>,
+            type:Array as PropType<vsThreeEventOpsPart[]>,
             require:true
         },
         cameraOpt:{
@@ -116,7 +116,7 @@ import {vsThreeCreateCameraOption,vsThreeCreateLightOption,vsThreeCreateModelOpt
         scene.add(mesh)
         renderer.render(scene,camera)
     }
-    const initEvent = (evnets:any[])=>{
+    const initEvent = (evnets:vsThreeEventOpsPart[])=>{
         evnets.forEach(ev=>{
             let obj ={
                 container:vsThreeContainer.value,

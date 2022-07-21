@@ -6,6 +6,13 @@ export interface vsThreeEventOps {
     container?:string|Element|HTMLDivElement,
     eventType:string,
     callback:Function,
+    camera:three.Camera,
+    scene:three.Scene
+}
+export interface vsThreeEventOpsPart {
+    container?:string|Element|HTMLDivElement,
+    eventType:string,
+    callback:Function,
     camera?:three.Camera,
     scene?:three.Scene
 }
@@ -76,7 +83,7 @@ export interface vsThreeOpt{
     option:{
         models?:vsThreeCreateModelOption[]|obj[],
         lights?:vsThreeCreateLightOption[]|obj[],
-        events?:vsThreeEventOps[]|obj[],
+        events?:vsThreeEventOpsPart[]|obj[],
         camera?:vsThreeCreateCameraOption|obj,
         helpers?:vsThreeHelper|obj
     },
